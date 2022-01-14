@@ -4,69 +4,141 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserLogin;
 use App\Http\Requests\UserRegister;
-use App\Models\User;
-use Faker\Factory;
+use App\Http\Services\AuthService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends Controller
 {
+    private $authService;
+
+    protected $TYPE_WITH_FACEBOOK = 1;
+    protected $TYPE_WITH_GOOGLE = 2;
+    protected $TYPE_WITH_ZALO = 3;
+
+
+    public function __construct(AuthService $authService)
+    {
+        $this->authService = $authService;
+    }
+
     public function register(UserRegister $request)
     {
-        $faker = Factory::create();
         $validated = $request->validated();
+
         $validated['password'] = bcrypt($validated['password']);
-        $user = User::create([
-            'password' =>  $validated['password'],
-            'name' => $request->name,
-            'phone_number' => $request->phone_number,
-            'email' => $faker->email(),
-            'birthday' => $faker->date(),
-            'home_address' => $faker->address(),
-            'work_address' => $faker->address(),
-            'rank_member_id' => '1',
-        ]);
 
-        $token = $user->createToken('lequangtho')->plainTextToken;
-
-        return response()->json([
-            'user' => $user,
-            'token' => $token,
-            'msg' => 'successful',
-        ], 200);
+        try {
+            $response = $this->authService->register(
+                $request->phone_number,
+                $request->name,
+                $validated['password']
+            );
+            return response([
+                'data' => $response,
+                'status' => Response::HTTP_OK,
+                'msg' => 'successfully'
+            ]);
+        } catch (\Throwable $th) {
+            // dd($th);
+            return response([
+                'data' => '',
+                'status' => Response::HTTP_BAD_REQUEST,
+                'msg' => 'fail'
+            ]);
+        }
     }
 
-    public function login(UserLogin $request)
+    public function loginWithPhoneNumber(UserLogin $request)
     {
         $validated = $request->validated();
+        try {
 
-        // Check email
-        $user = User::where('phone_number', $validated['phone_number'])->first();
+            $response = $this->authService->loginWithPhoneNumber($validated);
 
-        // Check password
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response([
-                'message' => 'Bad creds'
-            ], 401);
+            return response()->json([
+                'data' => $response,
+                'status' => Response::HTTP_OK,
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data' => $response,
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            ]);
         }
-        $token = $user->createToken('lequangtho')->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-
-        return response($response, 201);
     }
 
-    public function logout(Request $request) {
-        Auth::user()->tokens->each(function($token, $key) {
-            $token->delete();
-        });
+    public function loginWithSocials(Request $request, $typeLogin)
+    {
+        if ($typeLogin == $this->TYPE_WITH_GOOGLE || $typeLogin == $this->TYPE_WITH_FACEBOOK) {
+            $validated = $request->validate([
+                'name' => 'string|required',
+                'email' => 'string|required|email:rfc,dns|max:100',
+                'provider_id' => 'string|required|max:100',
+            ]);
+        } elseif ($typeLogin == $this->TYPE_WITH_ZALO) {
+            $validated = $request->validate([
+                'name' => 'string|required',
+                'email' => 'string|required|email:rfc,dns|max:100',
+                'provider_id' => 'string|required|max:100',
+            ]);
+        }
 
-        return [
-            'message' => 'Logged out'
-        ];
+        try {
+            if ($typeLogin == $this->TYPE_WITH_GOOGLE) {
+                $response = $this->authService->loginWithGoogleFacebook($validated, $this->TYPE_WITH_GOOGLE);
+            } elseif ($typeLogin == $this->TYPE_WITH_FACEBOOK) {
+                $response = $this->authService->loginWithGoogleFacebook($validated, $this->TYPE_WITH_FACEBOOK);
+            } elseif ($typeLogin == $this->TYPE_WITH_ZALO) {
+                $response = $this->authService->loginWithZalo();
+            }
+
+            return response()->json([
+                'data' => $response,
+                'status' => Response::HTTP_OK,
+            ]);
+        } catch (\Throwable $th) {
+            dd($th);
+            return response()->json([
+                // 'data' => $response,
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+            ]);
+        }
+    }
+
+    public function logout(Request $request)
+    {
+        // Logout trên tất cả các thiết bị
+        // Auth::user()->tokens->each(function($token, $key) {
+        //     $token->delete();
+        // });
+
+        // Logout owr 1 thiết bị
+        $user = request()->user();
+
+        $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
+
+        return response()->json([
+            'msg' => 'Successfully logged out',
+        ],);
+    }
+
+    public function checkUserExisted(Request $request, string $phone_number)
+    {
+        try {
+            $user = $this->authService->checkUserExisted($phone_number);
+
+            return response()->json([
+                'data' => $user ? true : false,
+                'status' => Response::HTTP_OK,
+                'msg' => 'User does existed!',
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'data' => 'null',
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'msg' => '',
+            ]);
+        }
     }
 }

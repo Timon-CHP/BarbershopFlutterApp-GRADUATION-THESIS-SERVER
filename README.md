@@ -18,3 +18,24 @@
 
 ## Tool
 [migrations-generator](https://github.com/kitloong/laravel-migrations-generator)
+
+
+## Document API
+
+**Start Server for flutter**
+- php artisan serve --host 0.0.0.0
+
+**DOMAIN: http://localhost:8000**
+
+- Check User Existed 
+    * URI: api/v1/auth/check-user/{phone_number}
+    * Method: GET
+    * Request: {DOMAIN}/api/v1/auth/check-user/+84973271208
+    * Response: 
+       ```json
+{
+            "data": "true",
+            "status": 200,
+            "msg": "User does existed!"
+}
+```

@@ -21,6 +21,8 @@ class User extends Model
         'birthday',
         'home_address',
         'work_address',
+        'provider_id' ,
+        'provider_name',
         'rank_member_id',
         'role_id',
     ];
