@@ -24,4 +24,5 @@ Route::group(['prefix' => 'v1'], function () {
     Route::post('/auth/login-socials/{typeLogin}', [AuthController::class, 'loginWithSocials']);
     Route::post('/auth/login-phone-number/', [AuthController::class, 'loginWithPhoneNumber']);
     Route::get('/auth/check-user/{phone_number}', [AuthController::class, 'checkUserExisted']);
+    Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
 });

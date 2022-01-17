@@ -44,7 +44,7 @@ class AuthService
         // Check password
         if (!$user || !Hash::check($validated['password'], $user->password)) {
             return response()->json([
-                'message' => 'Bad creds'
+                'msg' => 'Bad creds'
             ], 401);
         }
         $token = $user->createToken('loginToken')->plainTextToken;
@@ -70,7 +70,7 @@ class AuthService
         // Check phone number
         $user = User::where('provider_name', $typeSocial)
             ->where('provider_id', $validated['provider_id'])->first();
-        
+
         // Check password
         if (!$user) {
             $user = User::create([
@@ -92,7 +92,7 @@ class AuthService
                 'home_address' => $user->home_address . '',
                 'work_address' => $user->work_address . '',
                 'provider_id' => $user->provider_id . '',
-                'provider_name' => $user->provider_name.'',
+                'provider_name' => $user->provider_name . '',
             ],
             'token' => '' . $token,
         ];
@@ -100,6 +100,24 @@ class AuthService
         return $response;
     }
 
+    public function resetPassword($validated)
+    {
+        $user = User::where('phone_number', $validated['phone_number'])->first();
+        // dd($user);
+        if (!$user) {
+            return response()->json([
+                'data'=> false,
+                'msg' => 'User does not exist',
+            ], 401);
+        } else {
+            $user->password = $validated['password'];
+            $user->save();
+            return response()->json([
+                'data'=> true,
+                'msg' => 'Successfull'
+            ], 200);
+        }
+    }
 
     public function loginWithZalo()
     {

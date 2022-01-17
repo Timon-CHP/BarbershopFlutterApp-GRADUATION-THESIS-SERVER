@@ -141,4 +141,24 @@ class AuthController extends Controller
             ]);
         }
     }
+
+    public function resetPassword(UserLogin $request){
+        $validated = $request->validated();
+
+        $validated['password'] = bcrypt($validated['password']);
+
+        try {
+            $response = $this->authService->resetPassword(
+                $validated
+            );
+            return $response;
+        } catch (\Throwable $th) {
+            // dd($th);
+            return response([
+                'data' => null,
+                'status' => Response::HTTP_BAD_REQUEST,
+                'msg' => 'fail'
+            ]);
+        }
+    }
 }
