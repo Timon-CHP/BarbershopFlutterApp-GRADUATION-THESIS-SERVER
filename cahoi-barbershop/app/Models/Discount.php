@@ -12,10 +12,19 @@ class Discount extends Model
 
     protected $fillable = [
         'discount_id',
+        'code',
         'name',
         'description',
         'percent_discount',
         'start_applying_at',
         'end_applying_at',
     ];
+
+    public function bills(){
+        return  $this->hasMany(Bill::class);
+    }  
+
+    public function tasks(){
+        return  $this->hasMany(Task::class);
+    }  
 }

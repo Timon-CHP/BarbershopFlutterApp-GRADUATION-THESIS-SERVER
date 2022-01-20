@@ -15,16 +15,16 @@ class Bill extends Model
         'bill_id',
         'book_date',
         'total_money',
-        'shipping_fee',
-        'delivery_address',
-        'specific_delivery_address',
-        'is_fast_delivery',
         'is_complete',
         'user_id',
+        'discount_id',
     ];
 
     public function user(){
         return  $this->belongsTo(User::class);
+    }  
+    public function discount(){
+        return  $this->belongsTo(Discount::class);
     }  
     
     public function billProducts()

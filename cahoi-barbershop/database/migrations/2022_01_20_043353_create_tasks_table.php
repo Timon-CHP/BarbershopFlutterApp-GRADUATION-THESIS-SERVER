@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBillsTable extends Migration
+class CreateTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,13 @@ class CreateBillsTable extends Migration
      */
     public function up()
     {
-        Schema::create('bills', function (Blueprint $table) {
-            $table->bigInteger('bill_id', true);
-            $table->dateTime('book_date');
+        Schema::create('tasks', function (Blueprint $table) {
+            $table->bigInteger('task_id', true);
+            $table->dateTime('start_time');
+            $table->integer('duration')->default(30);
             $table->integer('total_money');
-            $table->integer('shipping_fee');
-            $table->string('delivery_address', 250);
-            $table->string('specific_delivery_address', 250);
-            $table->boolean('is_fast_delivery')->default(false);
             $table->boolean('is_complete')->default(false);
+            $table->bigInteger('discount_id')->index('discount_id');
             $table->bigInteger('user_id')->index('user_id');
             $table->timestamps();
         });
@@ -34,6 +32,6 @@ class CreateBillsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bills');
+        Schema::dropIfExists('tasks');
     }
 }

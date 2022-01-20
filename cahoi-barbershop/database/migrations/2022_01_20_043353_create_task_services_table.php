@@ -16,6 +16,8 @@ class CreateTaskServicesTable extends Migration
         Schema::create('task_services', function (Blueprint $table) {
             $table->bigInteger('task_id')->index('task_id');
             $table->bigInteger('service_id')->index('service_id');
+            $table->boolean('is_save_photo')->default(true)->comment('nếu true thì sau khi hoàn thành nhiệm vụ phải chụp ảnh lại cho khách');
+            $table->boolean('is_consult')->default(true)->comment('nếu true thì nhân viên phải tư vấn cho khách');
             $table->timestamps();
         });
     }

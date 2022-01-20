@@ -11,6 +11,10 @@ class BillProduct extends Model
 
     protected $fillable = [
         'quantily',
+        'shipping_fee',
+        'delivery_address',
+        'specific_delivery_address',
+        'is_fast_delivery',
         'bill_id',
         'product_id'
     ];

@@ -17,6 +17,10 @@ class CreateBillProductsTable extends Migration
             $table->integer('quantily')->default(1);
             $table->bigInteger('bill_id')->index('bill_id');
             $table->bigInteger('product_id')->index('product_id');
+            $table->integer('shipping_fee');
+            $table->string('delivery_address', 250);
+            $table->string('specific_delivery_address', 250);
+            $table->boolean('is_delivery_fast')->default(false);
             $table->timestamps();
         });
     }

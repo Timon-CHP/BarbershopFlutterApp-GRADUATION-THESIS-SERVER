@@ -22,13 +22,13 @@ class CreateUsersTable extends Migration
             $table->date('birthday')->default('1990-01-01');
             $table->string('home_address', 250)->nullable();
             $table->string('work_address', 250)->nullable();
-            $table->string('provider_id',100)->nullable();
+            $table->string('provider_id', 100)->nullable();
             $table->enum('provider_name', ['facebook', 'google', 'zalo'])->nullable();
-            $table->integer('rank_member_id')->index('rank_member_id')->default(1);
-            $table->bigInteger('role_id')->index('role_id')->default(2);
+            $table->integer('rank_member_id')->default(1)->index('rank_member_id');
+            $table->bigInteger('role_id')->default(2)->index('role_id');
             $table->timestamps();
 
-            $table->unique(['phone_number', 'email','provider_id'], 'phone_number');
+            $table->unique(['phone_number', 'email', 'provider_id'], 'phone_number');
         });
     }
 
