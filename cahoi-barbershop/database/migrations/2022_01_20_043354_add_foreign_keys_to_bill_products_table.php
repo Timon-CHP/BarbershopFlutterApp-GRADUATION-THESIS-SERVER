@@ -14,8 +14,8 @@ class AddForeignKeysToBillProductsTable extends Migration
     public function up()
     {
         Schema::table('bill_products', function (Blueprint $table) {
-            $table->foreign(['product_id'], 'bill_products_ibfk_2')->references(['product_id'])->on('products')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign(['bill_id'], 'bill_products_ibfk_1')->references(['bill_id'])->on('bills')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['product_id'], 'bill_products_ibfk_2')->references(['id'])->on('products')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['bill_id'], 'bill_products_ibfk_1')->references(['id'])->on('bills')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

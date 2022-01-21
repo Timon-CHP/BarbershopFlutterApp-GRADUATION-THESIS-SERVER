@@ -4,30 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Staff extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'staff_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'staff_id',
-        'name',
-        'birthday',
-        'skill_rate',
-        'communication_rate',
-        'is_working',
-        'work_schedule',
-        'position_id',
-        'workplace_id',
-    ];
+    protected $table = 'staffs';
 
-    public function position(){
+    public function position(): BelongsTo
+    {
         return  $this->belongsTo(Position::class);
-    }  
+    }
 
-    public function workplace(){
+    public function workplace(): BelongsTo
+    {
         return  $this->belongsTo(Workplace::class);
-    }  
+    }
 }

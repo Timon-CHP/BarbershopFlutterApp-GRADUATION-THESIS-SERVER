@@ -14,7 +14,7 @@ class CreateBillsTable extends Migration
     public function up()
     {
         Schema::create('bills', function (Blueprint $table) {
-            $table->bigInteger('bill_id', true);
+            $table->bigInteger('id', true);
             $table->dateTime('order_date');
             $table->integer('total_money');
             $table->boolean('is_complete')->default(false);

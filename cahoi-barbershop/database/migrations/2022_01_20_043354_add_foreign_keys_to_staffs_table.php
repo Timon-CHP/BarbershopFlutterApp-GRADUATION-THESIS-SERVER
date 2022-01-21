@@ -14,8 +14,8 @@ class AddForeignKeysToStaffsTable extends Migration
     public function up()
     {
         Schema::table('staffs', function (Blueprint $table) {
-            $table->foreign(['position_id'], 'staffs_ibfk_2')->references(['position_id'])->on('positions')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign(['workplace_id'], 'staffs_ibfk_1')->references(['workplace_id'])->on('workplaces')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['position_id'], 'staffs_ibfk_2')->references(['id'])->on('positions')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['workplace_id'], 'staffs_ibfk_1')->references(['id'])->on('workplaces')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

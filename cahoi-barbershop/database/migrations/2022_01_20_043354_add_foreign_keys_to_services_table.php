@@ -14,7 +14,7 @@ class AddForeignKeysToServicesTable extends Migration
     public function up()
     {
         Schema::table('services', function (Blueprint $table) {
-            $table->foreign(['category_service_id'], 'services_ibfk_1')->references(['category_service_id'])->on('category_services')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['category_service_id'], 'services_ibfk_1')->references(['id'])->on('category_services')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

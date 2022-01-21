@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
@@ -11,39 +13,27 @@ class User extends Model
 {
     use HasFactory, HasApiTokens, Notifiable;
 
-    protected $primaryKey = 'user_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'password',
-        'name',
-        'phone_number',
-        'email',
-        'birthday',
-        'home_address',
-        'work_address',
-        'provider_id' ,
-        'provider_name',
-        'rank_member_id',
-        'role_id',
-    ];
+    protected $table = 'users';
 
-    public function rankMember()
+    public function rankMember(): BelongsTo
     {
-        return  $this->belongsTo(RankMember::class);
+        return $this->belongsTo(RankMember::class);
     }
 
-    public function role()
+    public function role(): BelongsTo
     {
-        return  $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class);
     }
 
-    public function bills()
+    public function bills(): HasMany
     {
-        return  $this->hasMany(Bill::class);
+        return $this->hasMany(Bill::class);
     }
 
-    public function tasks()
+    public function tasks(): HasMany
     {
-        return  $this->hasMany(Task::class);
+        return $this->hasMany(Task::class);
     }
 }

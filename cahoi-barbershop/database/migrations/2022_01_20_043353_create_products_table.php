@@ -14,7 +14,7 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->bigInteger('product_id', true);
+            $table->bigInteger('id', true);
             $table->string('name', 100);
             $table->integer('price');
             $table->integer('remaining_quantity');
@@ -22,7 +22,7 @@ class CreateProductsTable extends Migration
             $table->text('description');
             $table->text('product_manual');
             $table->integer('images')->nullable();
-            $table->bigInteger('catagory_product_id')->index('catagory_product_id');
+            $table->bigInteger('category_product_id')->index('category_product_id');
             $table->bigInteger('manufacturer_id')->index('manufacturer_id');
             $table->timestamps();
         });

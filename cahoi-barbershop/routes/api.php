@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\CategoryServiceController;
+use App\Http\Controllers\DBServiceController;
 use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +19,27 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 Route::group(['prefix' => 'v1'], function () {
-    Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware(['middleware' => 'verify-logged-in']);
+    //Auth
+    Route::group(['prefix' => 'auth'], function () {
+        Route::post('/logout', [AuthController::class, 'logout'])->middleware(['middleware' => 'verify-logged-in']);
+        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/login-socials/{typeLogin}', [AuthController::class, 'loginWithSocials']);
+        Route::post('/login-phone-number', [AuthController::class, 'loginWithPhoneNumber']);
+        Route::get('/check-user/{phone_number}', [AuthController::class, 'checkUserExisted']);
+        Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+    });
 
-    Route::post('/auth/register', [AuthController::class, 'register']);
-    Route::post('/auth/login-socials/{typeLogin}', [AuthController::class, 'loginWithSocials']);
-    Route::post('/auth/login-phone-number/', [AuthController::class, 'loginWithPhoneNumber']);
-    Route::get('/auth/check-user/{phone_number}', [AuthController::class, 'checkUserExisted']);
-    Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
+    //Category Service
+    Route::group(['prefix' => 'category-service'], function () {
+        Route::get('/all', [CategoryServiceController::class, 'getAll']);
+    });
+
+    //DBService
+    Route::group(['prefix' => 'service'], function () {
+
+        Route::get('/{category_service_id}', [DBServiceController::class, 'getByCategoryServiceId']);
+    });
+
+    //Location
+
 });

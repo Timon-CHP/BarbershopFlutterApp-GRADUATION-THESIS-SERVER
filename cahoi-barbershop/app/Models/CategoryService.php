@@ -4,19 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CategoryService extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'category_service_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'category_service_id',
-        'name',
-    ];
+    protected $table = 'category_services';
 
-    public function services(){
+    public function services(): HasMany
+    {
         return  $this->hasMany(Service::class);
-    }   
+    }
 }

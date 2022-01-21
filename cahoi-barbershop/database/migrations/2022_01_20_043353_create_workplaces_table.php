@@ -14,7 +14,7 @@ class CreateWorkplacesTable extends Migration
     public function up()
     {
         Schema::create('workplaces', function (Blueprint $table) {
-            $table->integer('workplace_id', true);
+            $table->integer('id', true);
             $table->string('address', 250);
             $table->double('longitude')->comment('kinh độ');
             $table->double('latitude')->comment('vĩ độ');

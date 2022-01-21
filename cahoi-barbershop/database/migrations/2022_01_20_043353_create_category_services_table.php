@@ -14,7 +14,7 @@ class CreateCategoryServicesTable extends Migration
     public function up()
     {
         Schema::create('category_services', function (Blueprint $table) {
-            $table->bigInteger('category_service_id', true);
+            $table->bigInteger('id', true);
             $table->string('name', 50);
             $table->timestamps();
         });

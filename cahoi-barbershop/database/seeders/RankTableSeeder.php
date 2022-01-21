@@ -14,24 +14,20 @@ class RankTableSeeder extends Seeder
      */
     public function run()
     {
-        RankMember::create([
-            'rank_member_id'=> '1',
-            'name' => 'Silver',
-        ]);
+        $rankMember = new RankMember();
+        $rankMember->name = 'None';
+        $rankMember->save();
 
-        RankMember::create([
-            'rank_member_id'=> '2',
-            'name' => 'Silver',
-        ]);
+        $rankMember = new RankMember();
+        $rankMember->name = 'Silver';
+        $rankMember->save();
 
-        RankMember::create([
-            'rank_member_id'=> '3',
-            'name' => 'Gold'
-        ]);
+        $rankMember = new RankMember();
+        $rankMember->name = 'Gold';
+        $rankMember->save();
 
-        RankMember::create([
-            'rank_member_id'=> '4',
-            'name' => 'Diamond'
-        ]);
+        $rankMember = new RankMember();
+        $rankMember->name = 'Diamond';
+        $rankMember->save();
     }
 }

@@ -4,37 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'product_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'product_id',
-        'name',
-        'price',
-        'remaining_quantity',
-        'information',
-        'description',
-        'product_manual',
-        'images',
-        'catagory_product_id',
-        'manufacturer_id',
-    ];
+    protected $table = 'products';
 
-    public function categoryProduct()
+    public function categoryProduct(): BelongsTo
     {
         return  $this->belongsTo(CategoryProduct::class);
     }
 
-    public function categoryManufacturer()
+    public function categoryManufacturer(): BelongsTo
     {
         return  $this->belongsTo(Manufacturer::class);
     }
 
-    public function billProducts()
+    public function billProducts(): HasMany
     {
         return  $this->hasMany(BillProduct::class);
     }

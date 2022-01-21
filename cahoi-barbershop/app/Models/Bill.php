@@ -4,30 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Bill extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'bill_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'bill_id',
-        'book_date',
-        'total_money',
-        'is_complete',
-        'user_id',
-        'discount_id',
-    ];
+    protected $table = 'bills';
 
-    public function user(){
+    public function user(): BelongsTo
+    {
         return  $this->belongsTo(User::class);
-    }  
-    public function discount(){
+    }
+    public function discount(): BelongsTo
+    {
         return  $this->belongsTo(Discount::class);
-    }  
-    
-    public function billProducts()
+    }
+
+    public function billProducts(): HasMany
     {
         return  $this->hasMany(BillProduct::class);
     }

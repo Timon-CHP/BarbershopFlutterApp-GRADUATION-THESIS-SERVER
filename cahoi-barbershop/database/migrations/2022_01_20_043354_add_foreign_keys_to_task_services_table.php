@@ -14,8 +14,8 @@ class AddForeignKeysToTaskServicesTable extends Migration
     public function up()
     {
         Schema::table('task_services', function (Blueprint $table) {
-            $table->foreign(['task_id'], 'task_services_ibfk_2')->references(['task_id'])->on('tasks')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign(['service_id'], 'task_services_ibfk_1')->references(['service_id'])->on('services')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['task_id'], 'task_services_ibfk_2')->references(['id'])->on('tasks')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['service_id'], 'task_services_ibfk_1')->references(['id'])->on('services')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 

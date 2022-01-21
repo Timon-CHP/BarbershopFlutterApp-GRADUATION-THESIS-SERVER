@@ -4,27 +4,24 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Service extends Model
 {
     use HasFactory;
 
-    protected $primaryKey = 'service_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'service_id',
-        'name',
-        'full_description',
-        'price',
-        'category_service_id',
-    ];
+    protected $table = 'services';
 
-    public function categoryService(){
-        return  $this->belongsTo(CategoryService::class);
-    }   
-
-    public function taskServices()
+    public function categoryService(): BelongsTo
     {
-        return  $this->hasMany(TaskService::class);
+        return $this->belongsTo(CategoryService::class);
+    }
+
+    public function taskServices(): HasMany
+    {
+        return $this->hasMany(TaskService::class);
     }
 }

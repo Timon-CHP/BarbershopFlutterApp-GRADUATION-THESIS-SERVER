@@ -14,7 +14,7 @@ class CreateUserProductsTable extends Migration
     public function up()
     {
         Schema::create('user_products', function (Blueprint $table) {
-            $table->integer('quantily')->default(1);
+            $table->integer('quantity')->default(1);
             $table->bigInteger('user_id')->index('user_id');
             $table->bigInteger('product_id')->index('product_id');
             $table->timestamps();

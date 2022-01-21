@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use JetBrains\PhpStorm\ArrayShape;
 
 class UserRegister extends FormRequest
 {
@@ -13,7 +14,7 @@ class UserRegister extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +24,8 @@ class UserRegister extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    #[ArrayShape(['name' => "string", 'phone_number' => "string", 'password' => "string"])]
+    public function rules(): array
     {
         return [
             'name' => 'required|string',

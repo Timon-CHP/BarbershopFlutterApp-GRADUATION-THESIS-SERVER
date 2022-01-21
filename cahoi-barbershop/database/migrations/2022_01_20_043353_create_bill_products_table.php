@@ -14,7 +14,7 @@ class CreateBillProductsTable extends Migration
     public function up()
     {
         Schema::create('bill_products', function (Blueprint $table) {
-            $table->integer('quantily')->default(1);
+            $table->integer('quantity')->default(1);
             $table->bigInteger('bill_id')->index('bill_id');
             $table->bigInteger('product_id')->index('product_id');
             $table->integer('shipping_fee');

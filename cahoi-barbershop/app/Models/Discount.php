@@ -4,27 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Discount extends Model
 {
     use HasFactory;
-    protected $primaryKey = 'discount_id';
+    protected $primaryKey = 'id';
 
-    protected $fillable = [
-        'discount_id',
-        'code',
-        'name',
-        'description',
-        'percent_discount',
-        'start_applying_at',
-        'end_applying_at',
-    ];
+    protected $table ='discounts';
 
-    public function bills(){
+    public function bills(): HasMany
+    {
         return  $this->hasMany(Bill::class);
-    }  
+    }
 
-    public function tasks(){
+    public function tasks(): HasMany
+    {
         return  $this->hasMany(Task::class);
-    }  
+    }
 }

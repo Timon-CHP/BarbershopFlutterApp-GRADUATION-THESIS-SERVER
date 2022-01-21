@@ -14,8 +14,8 @@ class AddForeignKeysToBillsTable extends Migration
     public function up()
     {
         Schema::table('bills', function (Blueprint $table) {
-            $table->foreign(['discount_id'], 'bills_ibfk_2')->references(['discount_id'])->on('discounts')->onUpdate('CASCADE')->onDelete('CASCADE');
-            $table->foreign(['user_id'], 'bills_ibfk_1')->references(['user_id'])->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['discount_id'], 'bills_ibfk_2')->references(['id'])->on('discounts')->onUpdate('CASCADE')->onDelete('CASCADE');
+            $table->foreign(['user_id'], 'bills_ibfk_1')->references(['id'])->on('users')->onUpdate('CASCADE')->onDelete('CASCADE');
         });
     }
 
