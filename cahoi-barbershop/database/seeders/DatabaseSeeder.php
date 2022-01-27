@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,7 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call(RoleTableSeeder::class);
         $this->call(CategoryServiceTableSeeder::class);
         $this->call(ServiceTableSeeder::class);
-        
+        $this->call(WorkplaceTableSeeder::class);
+        $this->call(PositionTableSeeder::class);
+        $this->call(StaffTableSeeder::class);
+
         // $this->call(UserTableSeeder::class);
     }
 }

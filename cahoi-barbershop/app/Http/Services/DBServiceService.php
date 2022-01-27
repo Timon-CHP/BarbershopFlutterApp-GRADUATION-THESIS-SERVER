@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Services;
+
 use App\Models\Service;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class DBServiceService
 {
-    public function getByCategoryId($id): JsonResponse
+    public function getByCategoryId(Request $request, $id)
     {
-        return response()->json(Service::all()->where('id',$id));
+        return Service::where('category_service_id', $id)->get();
     }
 }

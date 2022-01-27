@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWorkplacesTable extends Migration
+class CreateDatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateWorkplacesTable extends Migration
      */
     public function up()
     {
-        Schema::create('workplaces', function (Blueprint $table) {
-            $table->integer('id', true);
-            $table->string('address', 250);
-            $table->double('longitude')->comment('kinh độ');
-            $table->double('latitude')->comment('vĩ độ');
+        Schema::create('dates', function (Blueprint $table) {
+            $table->bigInteger('id', true);
+            $table->date('full_date');
+            $table->integer('day_of_month');
+            $table->date('month');
+            $table->date('year');
+            $table->boolean('is_holiday');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ class CreateWorkplacesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('workplaces');
+        Schema::dropIfExists('dates');
     }
 }

@@ -3,7 +3,10 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryServiceController;
 use App\Http\Controllers\DBServiceController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\WorkplaceController as WorkplaceControllerAlias;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -40,6 +43,16 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/{category_service_id}', [DBServiceController::class, 'getByCategoryServiceId']);
     });
 
-    //Location
+    //Workplace
+    Route::group(['prefix' => 'workplace'], function () {
+        Route::get('/all', [WorkplaceControllerAlias::class, 'getAll']);
+    });
 
+    //Employee
+    Route::group(['prefix' => 'employee'], function () {
+        Route::get('/all', [EmployeeController::class, 'getAll']);
+        Route::get('/{position_id}', [EmployeeController::class, 'getByPositionId']);
+        Route::get('/stylist/{workplace_id}', [EmployeeController::class, 'getStylist']);
+        Route::get('/stylist/date/{workplace_id}', [EmployeeController::class, 'getStylistByDate']);
+    });
 });

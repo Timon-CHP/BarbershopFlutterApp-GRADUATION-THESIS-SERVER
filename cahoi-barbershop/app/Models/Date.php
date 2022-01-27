@@ -6,16 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Position extends Model
+class Date extends Model
 {
     use HasFactory;
 
     protected $primaryKey = 'id';
 
-    protected $table = 'positions';
+    protected $table = 'dates';
 
-    public function employees(): HasMany
+    public function dateEmployees(): HasMany
     {
-        return $this->hasMany(Employee::class);
+        return $this->hasMany(DateEmployee::class);
     }
 }

@@ -3,12 +3,13 @@
 namespace App\Http\Services;
 
 use App\Models\CategoryService;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
 class CategoryServiceService
 {
-    public function getAll(): JsonResponse
+    public function getAll(): Collection|array
     {
-        return response()->json(CategoryService::all(['id', 'name']));
+        return CategoryService::all(['id', 'name']);
     }
 }

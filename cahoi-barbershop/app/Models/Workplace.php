@@ -13,8 +13,8 @@ class Workplace extends Model
 
     protected $table = 'workplaces';
 
-    public function products(): HasMany
+    public function employees(): HasMany
     {
-        return  $this->hasMany(Staff::class);
+        return  $this->hasMany(Employee::class);
     }
 }

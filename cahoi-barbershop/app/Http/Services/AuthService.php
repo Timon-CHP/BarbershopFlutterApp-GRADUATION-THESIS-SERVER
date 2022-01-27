@@ -3,8 +3,8 @@
 namespace App\Http\Services;
 
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
+use JetBrains\PhpStorm\ArrayShape;
 use Throwable;
 
 class AuthService
@@ -13,16 +13,17 @@ class AuthService
     protected int $TYPE_WITH_GOOGLE = 2;
     protected int $TYPE_WITH_ZALO = 3;
 
-    public function checkUserExisted($phone_number): JsonResponse
+    #[ArrayShape(['data' => "bool"])]
+    public function checkUserExisted($phone_number): array
     {
         $user = User::all()->where('phone_number', $phone_number)->first();
 
-        return response()->json([
+        return [
             'data' => (bool)$user,
-        ]);
+        ];
     }
 
-    public function register($request): JsonResponse
+    public function register($request): array
     {
         $validated = $request->validated();
 
@@ -34,34 +35,35 @@ class AuthService
 //                'name' => $validated['name'],
 //                'phone_number' => $validated['phone_number']
 //            ]);
-        $user = new User();
-        $user->password = $validated['password'];
-        $user->name = $validated['name'];
-        $user->phone_number = $validated['phone_number'];
-        $user->save();
+            $user = new User();
+            $user->password = $validated['password'];
+            $user->name = $validated['name'];
+            $user->phone_number = $validated['phone_number'];
+            $user->save();
 
-        $token = $user->createToken('regisToken')->plainTextToken;
+            $token = $user->createToken('regisToken')->plainTextToken;
 
-        return response()->json([
-            'user' => [
-                'id' => $user->id . '',
-                'name' => $user->name . '',
-                'phone_number' => $user->phone_number . '',
-                'email' => $user->email . '',
-                'birthday' => $user->birthday . '',
-                'home_address' => $user->home_address . '',
-                'work_address' => $user->work_address . '',
-            ],
-            'token' => $token,
-        ]);
+            return [
+                'user' => [
+                    'id' => $user->id . '',
+                    'name' => $user->name . '',
+                    'phone_number' => $user->phone_number . '',
+                    'email' => $user->email . '',
+                    'birthday' => $user->birthday . '',
+                    'home_address' => $user->home_address . '',
+                    'work_address' => $user->work_address . '',
+                ],
+                'token' => $token,
+            ];
         } catch (Throwable) {
-            return response()->json([
+            return [
+                'user' => null,
                 'msg' => __('auth.failed')
-            ], 401);
+            ];
         }
     }
 
-    public function loginWithPhoneNumber($request): JsonResponse
+    public function loginWithPhoneNumber($request): array
     {
         $validated = $request->validated();
         // Check phone number
@@ -69,11 +71,14 @@ class AuthService
 
         // Check password
         if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response()->json(['msg'=>__('auth.failed')], 401);
+            return [
+                'user' => null,
+                'token' => null,
+                'msg' => __('auth.failed')];
         }
         $token = $user->createToken('loginToken')->plainTextToken;
 
-        return response()->json([
+        return [
             'user' => [
                 'id' => $user->id . '',
                 'name' => $user->name . '',
@@ -84,10 +89,11 @@ class AuthService
                 'work_address' => $user->work_address . '',
             ],
             'token' => '' . $token,
-        ]);
+        ];
     }
 
-    public function loginWithSocials($request, $typeSocial): JsonResponse
+    #[ArrayShape(['user' => "string[]", 'token' => "string"])]
+    public function loginWithSocials($request, $typeSocial): array
     {
         $validated = $request;
 
@@ -120,7 +126,7 @@ class AuthService
         }
         $token = $user->createToken('loginToken')->plainTextToken;
 
-        return response()->json([
+        return [
             'user' => [
                 'id' => $user->id . '',
                 'name' => $user->name . '',
@@ -133,10 +139,10 @@ class AuthService
                 'provider_name' => $user->provider_name . '',
             ],
             'token' => '' . $token,
-        ]);
+        ];
     }
 
-    public function resetPassword($request): JsonResponse
+    public function resetPassword($request): array
     {
         $validated = $request->validated();
 
@@ -145,21 +151,21 @@ class AuthService
         $user = User::all()->where('phone_number', $validated['phone_number'])->first();
 
         if (!$user) {
-            return response()->json([
+            return [
                 'data' => false,
-            ], 401);
+            ];
         } else {
             $user->password = $validated['password'];
 
             $user->save();
 
-            return response()->json([
+            return [
                 'data' => true,
-            ]);
+            ];
         }
     }
 
-    public function logout(): JsonResponse
+    #[ArrayShape(['msg' => "string"])] public function logout(): array
     {
         // Logout trên tất cả các thiết bị
         // Auth::user()->tokens->each(function($token, $key) {
@@ -172,8 +178,8 @@ class AuthService
 
         $user->tokens()->where('id', $user->currentAccessToken()->id)->delete();
 
-        return response()->json([
+        return [
             'msg' => 'Successfully logged out',
-        ]);
+        ];
     }
 }

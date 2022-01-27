@@ -16,6 +16,6 @@ class CategoryServiceController extends Controller
 
     public function getAll(): JsonResponse
     {
-        return $this->categorySService->getAll();
+        return response()->json($this->categorySService->getAll());
     }
 }

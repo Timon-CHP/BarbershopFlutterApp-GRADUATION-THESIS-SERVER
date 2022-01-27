@@ -17,6 +17,6 @@ class DBServiceController extends Controller
 
     public function getByCategoryServiceId(Request $request, $categoryServiceId): JsonResponse
     {
-        return $this->dbService->getByCategoryId($categoryServiceId);
+        return response()->json($this->dbService->getByCategoryId($request,$categoryServiceId));
     }
 }
