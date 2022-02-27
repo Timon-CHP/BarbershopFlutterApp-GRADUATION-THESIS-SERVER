@@ -18,7 +18,12 @@ class WorkplaceController extends Controller
     public function getAll(): JsonResponse
     {
         return response()->json(
-            $this->workPlaceService->getAll()
+            [
+                'success' => true,
+                'errorCode' => 0,
+                'message' => '',
+                'data' => $this->workPlaceService->getAll(),
+            ]
         );
     }
 }

@@ -16,6 +16,6 @@ class Date extends Model
 
     public function dateEmployees(): HasMany
     {
-        return $this->hasMany(DateEmployee::class);
+        return $this->hasMany(DateEmployee::class, 'date_id');
     }
 }

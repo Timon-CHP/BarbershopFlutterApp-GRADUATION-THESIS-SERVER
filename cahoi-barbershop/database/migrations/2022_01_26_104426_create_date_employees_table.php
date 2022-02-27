@@ -14,7 +14,6 @@ class CreateDateEmployeesTable extends Migration
     public function up()
     {
         Schema::create('date_employees', function (Blueprint $table) {
-            $table->bigInteger('id', true);;
             $table->time('time_start')->nullable();
             $table->time('time_end')->nullable();
             $table->dateTime('checkin')->nullable();

@@ -17,8 +17,8 @@ class CreateDatesTable extends Migration
             $table->bigInteger('id', true);
             $table->date('full_date');
             $table->integer('day_of_month');
-            $table->date('month');
-            $table->date('year');
+            $table->integer('month');
+            $table->integer('year');
             $table->boolean('is_holiday');
             $table->timestamps();
         });

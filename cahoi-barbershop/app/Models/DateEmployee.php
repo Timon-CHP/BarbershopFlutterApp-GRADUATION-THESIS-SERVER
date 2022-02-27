@@ -12,14 +12,13 @@ class DateEmployee extends Model
 
     protected $table = 'date_employees';
 
-    protected $primaryKey = 'id';
-
     public function date(): BelongsTo
     {
-        return  $this->belongsTo(Date::class);
+        return  $this->belongsTo(Date::class, 'id');
     }
+
     public function employee(): BelongsTo
     {
-        return  $this->belongsTo(Employee::class);
+        return  $this->belongsTo(Employee::class, 'id');
     }
 }
