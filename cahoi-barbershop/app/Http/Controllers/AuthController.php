@@ -10,11 +10,11 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    private AuthService $authService;
+    private  $authService;
 
-    public function __construct(AuthService $authService)
+    public function __construct()
     {
-        $this->authService = $authService;
+        $this->authService = new AuthService();
     }
 
     public function register(UserRegister $request): JsonResponse

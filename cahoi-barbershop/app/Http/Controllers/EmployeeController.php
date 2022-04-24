@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    private EmployeeService $employeeService;
+    private  $employeeService;
 
-    public function __construct(EmployeeService $employeeService)
+    function __construct()
     {
-        $this->employeeService = $employeeService;
+        $this->employeeService = new EmployeeService();
     }
 
     public function getAll(): JsonResponse
@@ -34,12 +34,7 @@ class EmployeeController extends Controller
 
     public function getStylist($workplace_id): JsonResponse
     {
-        return response()->json([
-            'success' => true,
-            'errorCode' => 0,
-            'message' => '',
-            'data' => $this->employeeService->getStylist($workplace_id),
-        ]);
+        return response()->json($this->employeeService->getStylist($workplace_id));
     }
 
     public function getStylistByDate(Request $request, $workplace_id): JsonResponse
