@@ -11,7 +11,6 @@ class AuthService
 {
     protected int $TYPE_WITH_FACEBOOK = 1;
     protected int $TYPE_WITH_GOOGLE = 2;
-    protected int $TYPE_WITH_ZALO = 3;
 
     #[ArrayShape(['data' => "bool"])]
     public function checkUserExisted($phone_number): array
@@ -30,11 +29,6 @@ class AuthService
         $validated['password'] = bcrypt($validated['password']);
 
         try {
-//            $user = User::create([
-//                'password' => $validated['password'],
-//                'name' => $validated['name'],
-//                'phone_number' => $validated['phone_number']
-//            ]);
             $user = new User();
             $user->password = $validated['password'];
             $user->name = $validated['name'];
@@ -50,10 +44,7 @@ class AuthService
                     'phone_number' => $user->phone_number . '',
                     'email' => $user->email . '',
                     'birthday' => $user->birthday . '',
-                    'home_address' => $user->home_address . '',
-                    'work_address' => $user->work_address . '',
                 ],
-                'token' => $token,
             ];
         } catch (Throwable) {
             return [
@@ -85,8 +76,6 @@ class AuthService
                 'phone_number' => $user->phone_number . '',
                 'email' => $user->email . '',
                 'birthday' => $user->birthday . '',
-                'home_address' => $user->home_address . '',
-                'work_address' => $user->work_address . '',
             ],
             'token' => '' . $token,
         ];
@@ -98,12 +87,6 @@ class AuthService
         $validated = $request;
 
         if ($typeSocial == $this->TYPE_WITH_GOOGLE || $typeSocial == $this->TYPE_WITH_FACEBOOK) {
-            $validated = $request->validate([
-                'name' => 'string|required',
-                'email' => 'string|required|email:rfc,dns|max:100',
-                'provider_id' => 'string|required|max:100',
-            ]);
-        } elseif ($typeSocial == $this->TYPE_WITH_ZALO) {
             $validated = $request->validate([
                 'name' => 'string|required',
                 'email' => 'string|required|email:rfc,dns|max:100',

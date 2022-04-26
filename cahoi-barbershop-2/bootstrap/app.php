@@ -58,7 +58,7 @@ $app->singleton(
 | the default version. You may register other files below as needed.
 |
 */
-
+$app->configure('permission');
 $app->configure('app');
 
 /*
@@ -76,9 +76,12 @@ $app->configure('app');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+    'permission' => Spatie\Permission\Middlewares\PermissionMiddleware::class,
+    'role' => Spatie\Permission\Middlewares\RoleMiddleware::class,
+]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -91,11 +94,17 @@ $app->configure('app');
 |
 */
 
+$app->alias('cache', \Illuminate\Cache\CacheManager::class);
 $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
+$app->register(Spatie\Permission\PermissionServiceProvider::class);
+// Uncomment this line
+$app->register(App\Providers\AuthServiceProvider::class);
 
+// Add this line
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -112,5 +121,7 @@ $app->router->group([
 ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
+
+$app->configure('jwt');
 
 return $app;

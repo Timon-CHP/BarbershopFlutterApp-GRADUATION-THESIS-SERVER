@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePermissionUserTable extends Migration
+class CreateCalendarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class CreatePermissionUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('permission_user', function (Blueprint $table) {
-            $table->foreignId('permission_id')->references('id')->on('permissions')->onDelete('cascade');
+        Schema::create('calendars', function (Blueprint $table) {
+            $table->id();
+            $table->dateTime('scheduled_start_at');
+            $table->dateTime('scheduled_end_at');
+            $table->dateTime('check_in_at');
+            $table->dateTime('check_out_at');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
@@ -27,6 +31,6 @@ class CreatePermissionUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('permission_user');
+        Schema::dropIfExists('calendars');
     }
 }

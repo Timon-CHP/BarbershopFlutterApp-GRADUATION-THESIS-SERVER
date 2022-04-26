@@ -21,7 +21,15 @@ use YaangVu\LaravelBase\Helpers\RouterHelper;
 
 RouterHelper::resource($router, '/api/users', 'UserController');
 
-$router->post('api/login', 'AuthController@login');
+$router->post('api/login-phone-number', 'AuthController@loginWithPhoneNumber');
+$router->post('api/register', 'AuthController@register');
+
+$router->post('api/role', 'RoleController@createRole');
+$router->get('api/auth/me', 'AuthController@me');
+
+
+
+
 
 //$router->group(['prefix'=>'/api','middleware'=>'auth'], function () use ($router){
 //    $router->post('/logout','AuthController@logout');
