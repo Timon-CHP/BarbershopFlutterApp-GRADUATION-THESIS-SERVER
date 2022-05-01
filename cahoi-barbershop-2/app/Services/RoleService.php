@@ -2,10 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Throwable;
 use YaangVu\LaravelBase\Services\impl\BaseService;
 
 class RoleService extends BaseService
@@ -15,17 +14,27 @@ class RoleService extends BaseService
         $this->model = new Role();
     }
 
-    public function createRole(Request $request): Model|Builder
+    public function createRole(Request $request): array
     {
         $rule = [
             'name' => 'required',
-            'created_by' => 'required'
+//            'created_by' => 'required'
         ];
+
         $this->storeRequestValidate($request, $rule);
-        return Role::create([
-            'name' => $request['name'],
-            "created_by" => $request["created_by"]
-        ]);
+
+        try {
+            return ["data" => Role::create([
+                "name" => $request["name"],
+                "guard_name" => $request["name"],
+                "created_by" => $request["created_by"]
+            ])];
+        } catch (Throwable $ex) {
+            return [
+                "data" => null,
+                "message" => $ex->getMessage()
+            ];
+        }
     }
 
 }

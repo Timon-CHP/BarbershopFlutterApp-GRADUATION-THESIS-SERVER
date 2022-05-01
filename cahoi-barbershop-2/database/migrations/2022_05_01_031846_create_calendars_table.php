@@ -19,7 +19,7 @@ class CreateCalendarsTable extends Migration
             $table->dateTime('scheduled_end_at');
             $table->dateTime('check_in_at');
             $table->dateTime('check_out_at');
-            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('stylist_id')->references('id')->on('stylists')->onDelete('cascade');
             $table->timestamps();
         });
     }

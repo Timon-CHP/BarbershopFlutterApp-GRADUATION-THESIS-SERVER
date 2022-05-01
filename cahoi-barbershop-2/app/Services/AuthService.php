@@ -3,14 +3,17 @@
 namespace App\Services;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use JetBrains\PhpStorm\ArrayShape;
 use Throwable;
 use YaangVu\LaravelBase\Services\impl\BaseService;
 
 
+/**
+ * Đơn vị của TTL là phút
+ * */
 class AuthService extends BaseService
 {
     function createModel(): void
@@ -18,12 +21,7 @@ class AuthService extends BaseService
         $this->model = new User();
     }
 
-    public function me()
-    {
-        return ["data" => auth()->user()];
-    }
-
-    public function loginWithPhoneNumber(Request $request): array
+    public function login(Request $request): array
     {
         $user = $this->model->where('phone_number', $request['phone_number'])->first();
 
@@ -33,10 +31,9 @@ class AuthService extends BaseService
             ];
         }
 
-//        $token = $user->createToken('loginToken')->plainTextToken;
         $credentials = $request->only(['phone_number', 'password']);
 
-        if (!$token = Auth::attempt($credentials)) {
+        if (!$token = auth()->setTTL(30)->attempt($credentials)) {
             return ['message' => 'Unauthorized'];
         }
 
@@ -44,29 +41,31 @@ class AuthService extends BaseService
     }
 
     //Add this method to the Controller class
-    protected function respondWithToken($token)
+
+    /**
+     * Đây là hàm trả về token
+     * */
+    #[ArrayShape(['token' => "", 'token_type' => "string", 'expires_in' => "float|int"])]
+    protected function respondWithToken($token): array
     {
         return [
             'token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => Carbon::now()->addSeconds(auth()->factory()->getTTL() * 60)->utc()->toDateTimeString()
         ];
     }
 
-    #[ArrayShape(['user' => "mixed", "token" => "mixed"])]
-    public function loginWithSocial(Request $request): array
+    #[ArrayShape(['message' => "string"])]
+    public function logout(): array
     {
-        $user = User::where('phone_number', $request['phone_number'])->first();;
-
-        $token = $user->createToken('loginToken')->plainTextToken;
-
+        auth()->logout();
         return [
-            'user' => $user,
-            "token" => $token,
+            "data" => true,
+            'message' => 'User logged off successfully!'
         ];
     }
 
-    public function register(Request $request)
+    public function register(Request $request): array
     {
         try {
             $user = User::create([
@@ -83,5 +82,10 @@ class AuthService extends BaseService
                 'message' => __('auth.failed')
             ];
         }
+    }
+
+    protected function refreshToken()
+    {
+
     }
 }

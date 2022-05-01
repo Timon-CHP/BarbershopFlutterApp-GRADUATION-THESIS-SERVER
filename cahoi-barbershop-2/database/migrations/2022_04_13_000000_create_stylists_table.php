@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateFacilitiesTable extends Migration
+class CreateStylistsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateFacilitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('facilities', function (Blueprint $table) {
+        Schema::create('stylists', function (Blueprint $table) {
             $table->id();
-            $table->string('longitude', 30)->comment('kinh độ');
-            $table->string('latitude', 30)->comment('vĩ độ');
+            $table->float('communication_rate')->default(5.0)->comment("điểm kĩ năng giao tiếp");
+            $table->float('skill_rate')->default(5.0)->comment("điểm kĩ năng chuyên môn");
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('facility_id')->references('id')->on('facilities')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateFacilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('facilities');
+        Schema::dropIfExists('stylists');
     }
 }

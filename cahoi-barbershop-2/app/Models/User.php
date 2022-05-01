@@ -9,11 +9,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, HasFactory, HasApiTokens;
+    use Authenticatable, Authorizable, HasFactory, HasApiTokens, HasRoles;
 
     protected $table = 'users';
 
@@ -23,8 +24,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'phone_number', 'password', 'created_by'
+        'name',
+        'email',
+        'phone_number',
+        'type_provider',
+        'provider_id',
+        'password',
+        'status',
+        'points',
+        'rank_id',
+        'created_by',
     ];
+
+    public function stylist()
+    {
+        $this->hasOne(Stylist::class, 'user_id', 'id');
+    }
 
     /**
      * The attributes excluded from the model's JSON form.
