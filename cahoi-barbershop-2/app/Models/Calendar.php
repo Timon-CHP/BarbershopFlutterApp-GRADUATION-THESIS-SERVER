@@ -9,10 +9,10 @@ class Calendar extends Model
     protected $table = 'calendars';
 
     protected $fillable = [
-        'scheduledStartAt',
-        'scheduledEndAt',
-        'checkInAt',
-        'checkOutAt',
+        'scheduled_start_at',
+        'scheduled_end_at',
+        'check_in_at',
+        'check_out_at',
         'stylist_id',
     ];
 

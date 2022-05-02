@@ -36,6 +36,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'created_by',
     ];
 
+    public function rank()
+    {
+        $this->belongsTo(Rank::class, 'rank_id', 'id');
+    }
+
+    public function tasks()
+    {
+        $this->hasMany(Task::class, 'customer_id', 'id');
+    }
+
+    public function likes()
+    {
+        $this->belongsToMany(Like::class, 'likes', 'user_id', 'post_id');
+    }
+
     public function stylist()
     {
         $this->hasOne(Stylist::class, 'user_id', 'id');

@@ -17,7 +17,7 @@ class CreateBillsTable extends Migration
             $table->id();
             $table->integer('total');
             $table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
-            $table->foreignId('discount_id')->references('id')->on('discounts')->onDelete('cascade');
+            $table->foreignId('discount_id')->nullable()->references('id')->on('discounts')->onDelete('cascade');
             $table->timestamps();
         });
     }

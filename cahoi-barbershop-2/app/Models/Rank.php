@@ -15,6 +15,6 @@ class Rank extends Model
 
     public function users()
     {
-        $this->belongsTo(User::class, 'user_id', 'id');
+        $this->hasMany(User::class, 'rank_id', 'id');
     }
 }

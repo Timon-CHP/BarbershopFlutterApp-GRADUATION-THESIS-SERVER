@@ -17,12 +17,12 @@ class Product extends Model
         'type_product_id',
     ];
 
-    public function typeProduct()
+    public function tasks()
     {
-        $this->belongsTo(TypeProduct::class, 'type_product_id', 'id');
+        $this->belongsToMany(Task::class, 'task_products', 'product_id', 'task_id');
     }
 
-    public function tasks()
+    public function type()
     {
         $this->belongsTo(TypeProduct::class, 'type_product_id', 'id');
     }

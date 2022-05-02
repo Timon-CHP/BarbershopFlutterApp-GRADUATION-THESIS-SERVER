@@ -6,9 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    protected $table = '';
+    protected $table = 'images';
 
-    protected $fillable = [];
+    protected $fillable = [
+        'link',
+    ];
+
+    public function tasks()
+    {
+        $this->belongsToMany(Product::class, 'task_images', 'image_id', 'task_id');
+    }
 
     public function facilities()
     {
@@ -19,4 +26,6 @@ class Image extends Model
     {
         $this->belongsToMany(Product::class, 'product_images', 'image_id', 'product_id');
     }
+
+    //TODO có nhiều ảnh của user nữa (avatar)
 }

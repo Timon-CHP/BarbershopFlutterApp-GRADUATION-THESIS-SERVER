@@ -16,6 +16,11 @@ class Post extends Model
         'task_id',
     ];
 
+    public function users()
+    {
+        $this->belongsToMany(User::class, 'like', 'user_id', 'post_id');
+    }
+
     public function task()
     {
         $this->belongsTo(Task::class, 'task_id', 'id');

@@ -43,7 +43,7 @@ class AddCreatedByToTables extends Migration
         Schema::table('facilities', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
-        Schema::table('task_product', function (Blueprint $table) {
+        Schema::table('task_products', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
         Schema::table('images', function (Blueprint $table) {
@@ -62,6 +62,12 @@ class AddCreatedByToTables extends Migration
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
         Schema::table('facility_images', function (Blueprint $table) {
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
+        });
+        Schema::table('ratings', function (Blueprint $table) {
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
+        });
+        Schema::table('likes', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
     }

@@ -29,8 +29,6 @@ class StylistsTableSeeder extends Seeder
             ]);
 
             Stylist::create([
-                'communication_rate' => random_int(35, 50) / 10,
-                'skill_rate' => random_int(35, 50) / 10,
                 'user_id' => $user->id,
                 'facility_id' => random_int(1, 6)
             ]);

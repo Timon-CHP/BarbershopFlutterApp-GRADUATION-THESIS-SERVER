@@ -15,9 +15,9 @@ class Facility extends Model
         'latitude',
     ];
 
-    public function stylists()
+    public function stylist()
     {
-        $this->hasMany(Stylist::class);
+        $this->hasMany(Stylist::class, 'facility_id', 'id');
     }
 
     public function images()

@@ -15,7 +15,7 @@ class Discount extends Model
         'reduction',
     ];
 
-    public function bills()
+    public function bill()
     {
         $this->hasMany(Bill::class, 'discount_id');
     }
