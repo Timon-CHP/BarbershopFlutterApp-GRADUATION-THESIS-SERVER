@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Rank extends Model
 {
@@ -13,8 +14,8 @@ class Rank extends Model
         'threshold',
     ];
 
-    public function users()
+    public function users(): HasMany
     {
-        $this->hasMany(User::class, 'rank_id', 'id');
+        return $this->hasMany(User::class, 'rank_id', 'id');
     }
 }

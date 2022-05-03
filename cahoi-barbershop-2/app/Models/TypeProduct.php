@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TypeProduct extends Model
 {
@@ -12,8 +13,8 @@ class TypeProduct extends Model
         'name',
     ];
 
-    public function Products()
+    public function products(): HasMany
     {
-        $this->hasMany(Product::class, 'type_product_id', 'id');
+        return $this->hasMany(Product::class, 'type_product_id', 'id');
     }
 }

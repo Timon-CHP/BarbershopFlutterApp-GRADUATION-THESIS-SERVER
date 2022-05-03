@@ -7,6 +7,10 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Lumen\Auth\Authorizable;
 use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
@@ -36,24 +40,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'created_by',
     ];
 
-    public function rank()
+    public function rank(): BelongsTo
     {
-        $this->belongsTo(Rank::class, 'rank_id', 'id');
+        return $this->belongsTo(Rank::class, 'rank_id', 'id');
     }
 
-    public function tasks()
+    public function tasks(): HasMany
     {
-        $this->hasMany(Task::class, 'customer_id', 'id');
+        return $this->hasMany(Task::class, 'customer_id', 'id');
     }
 
-    public function likes()
+    public function likes(): BelongsToMany
     {
-        $this->belongsToMany(Like::class, 'likes', 'user_id', 'post_id');
+        return $this->belongsToMany(Like::class, 'likes', 'user_id', 'post_id');
     }
 
-    public function stylist()
+    public function stylist(): HasOne
     {
-        $this->hasOne(Stylist::class, 'user_id', 'id');
+        return $this->hasOne(Stylist::class, 'user_id', 'id');
     }
 
     /**
@@ -71,7 +75,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @return mixed
      */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
@@ -81,7 +85,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      *
      * @return array
      */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [];
     }

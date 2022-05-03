@@ -16,11 +16,11 @@ class Bill extends Model
 
     public function task()
     {
-        $this->belongsTo(Task::class, 'task_id', 'id');
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 
     public function discount()
     {
-        $this->belongsTo(Discount::class, 'discount_id', 'id');
+        return $this->belongsTo(Discount::class, 'discount_id', 'id');
     }
 }

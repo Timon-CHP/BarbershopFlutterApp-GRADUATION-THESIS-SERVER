@@ -14,17 +14,17 @@ class Image extends Model
 
     public function tasks()
     {
-        $this->belongsToMany(Product::class, 'task_images', 'image_id', 'task_id');
+        return $this->belongsToMany(Product::class, 'task_images', 'image_id', 'task_id');
     }
 
     public function facilities()
     {
-        $this->belongsToMany(Facility::class, 'facility_images', 'image_id', 'facility_id');
+        return $this->belongsToMany(Facility::class, 'facility_images', 'image_id', 'facility_id');
     }
 
     public function products()
     {
-        $this->belongsToMany(Product::class, 'product_images', 'image_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'product_images', 'image_id', 'product_id');
     }
 
     //TODO có nhiều ảnh của user nữa (avatar)

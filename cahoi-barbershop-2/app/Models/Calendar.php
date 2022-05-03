@@ -18,6 +18,6 @@ class Calendar extends Model
 
     public function stylist()
     {
-        $this->belongsTo(Stylist::class, 'stylist_id', 'id');
+        return $this->belongsTo(Stylist::class, 'stylist_id', 'id');
     }
 }

@@ -21,26 +21,71 @@ class AuthService extends BaseService
         $this->model = new User();
     }
 
-    public function login(Request $request): array
+    #[ArrayShape(['message' => "string"])]
+    public function logout(): array
     {
-        $user = $this->model->where('phone_number', $request['phone_number'])->first();
+        auth()->logout();
+        return [
+            'data' => true,
+            'message' => 'User logged off successfully!'
+        ];
+    }
 
-        if (!$user || !Hash::check($request['password'], $user->password)) {
+    public function register(Request $request): array
+    {
+        try {
+            $user = $this->model->create([
+                'phone_number' => $request['phone_number'],
+                'name' => $request['name'],
+                'password' => Hash::make($request['password'])
+            ]);
+
+            $user->assignRole(['customer']);
             return [
-                'data' => null
+                "data" => $user,
+            ];
+        } catch (Throwable) {
+            return [
+                "data" => null,
+                'message' => __('auth.failed')
             ];
         }
+    }
 
-        $credentials = $request->only(['phone_number', 'password']);
+    public function loginWithFacebook(Request $request): array
+    {
+        try {
+            $user = $this->model
+                ->where("type_provider", "facebook")
+                ->where("provider_id", $request['provider_id'])->first();
+            if (!$user) {
+                $user = $this->model->create([
+                    "name" => $request['name'],
+                    "email" => $request['email'],
+                    "type_provider" => "facebook",
+                    "provider_id" => $request['provider_id'],
+                ]);
 
-        if (!$token = auth()->setTTL(30)->attempt($credentials)) {
+                $user->assignRole(['customer']);
+            }
+
+            return $this->login($user);
+        } catch (Throwable $exception) {
+            return [
+                'data' => null,
+                'message' => $exception->getMessage()
+            ];
+        }
+    }
+
+    public function login(User $user): array
+    {
+        if (!$token = auth()->setTTL(30)->login($user)) {
             return ['message' => 'Unauthorized'];
         }
 
         return $this->respondWithToken($token);
     }
-
-    //Add this method to the Controller class
 
     /**
      * Đây là hàm trả về token
@@ -55,37 +100,47 @@ class AuthService extends BaseService
         ];
     }
 
-    #[ArrayShape(['message' => "string"])]
-    public function logout(): array
-    {
-        auth()->logout();
-        return [
-            "data" => true,
-            'message' => 'User logged off successfully!'
-        ];
-    }
-
-    public function register(Request $request): array
+    public function loginWithGoogle(Request $request)
     {
         try {
-            $user = User::create([
-                'phone_number' => $request['phone_number'],
-                'name' => $request['name'],
-                'password' => Hash::make($request['password'])
-            ]);
+            $user = $this->model
+                ->where("type_provider", "google")
+                ->where("provider_id", $request['provider_id'])->first();
+            if (!$user) {
+                $user = $this->model->create([
+                    "name" => $request['name'],
+                    "email" => $request['email'],
+                    "type_provider" => "google",
+                    "provider_id" => $request['provider_id'],
+                ]);
+
+                $user->assignRole(['customer']);
+            }
+
+            return $this->login($user);
+        } catch (Throwable $exception) {
             return [
-                "data" => $user,
-            ];
-        } catch (Throwable) {
-            return [
-                "data" => null,
-                'message' => __('auth.failed')
+                'data' => null,
+                'message' => $exception->getMessage()
             ];
         }
     }
 
-    protected function refreshToken()
+    public function loginWithPhoneNumber(Request $request): array
     {
+        $user = $this->model->where('phone_number', $request['phone_number'])->first();
 
+        if (!$user || !Hash::check($request['password'], $user->password)) {
+            return [
+                'data' => null
+            ];
+        }
+
+        return $this->login($user);
+    }
+
+    public function refreshToken(): array
+    {
+        return $this->respondWithToken(auth()->setTTL(30)->refresh());
     }
 }

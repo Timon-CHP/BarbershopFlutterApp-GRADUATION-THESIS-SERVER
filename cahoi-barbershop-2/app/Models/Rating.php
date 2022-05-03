@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Rating extends Model
 {
@@ -15,8 +16,8 @@ class Rating extends Model
         'task_id',
     ];
 
-    public function task()
+    public function task(): BelongsTo
     {
-        $this->belongsTo(Task::class, 'task_id', 'id');
+        return $this->belongsTo(Task::class, 'task_id', 'id');
     }
 }

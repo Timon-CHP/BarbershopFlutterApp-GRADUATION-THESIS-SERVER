@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('provider_id')->unique()->nullable();
             $table->enum('type_provider', ['phone_number', 'facebook', 'google'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->string('password')->nullable();
             $table->boolean('status')->default(true)->comment("nếu = false thì tài khoản này đã bị khoá");
             $table->integer('points')->comment('điểm tích luỹ')->default(0);
             $table->rememberToken();

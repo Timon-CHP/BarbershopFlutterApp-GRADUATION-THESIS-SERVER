@@ -26,8 +26,28 @@ class AuthController extends BaseController
         return response()->json($this->service->logout());
     }
 
+    public function LoginWithPhoneNumber(Request $request): JsonResponse
+    {
+        return response()->json($this->service->loginWithPhoneNumber($request));
+    }
+
+    public function loginWithFacebook(Request $request): JsonResponse
+    {
+        return response()->json($this->service->loginWithFacebook($request));
+    }
+
+    public function loginWithGoogle(Request $request): JsonResponse
+    {
+        return response()->json($this->service->loginWithGoogle($request));
+    }
+
     public function login(Request $request): JsonResponse
     {
         return response()->json($this->service->login($request));
+    }
+
+    public function refreshToken()
+    {
+        return response()->json($this->service->refreshToken());
     }
 }

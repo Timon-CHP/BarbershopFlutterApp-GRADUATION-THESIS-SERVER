@@ -23,24 +23,35 @@ use YaangVu\LaravelBase\Helpers\RouterHelper;
 
 $router->group(['prefix' => '/api'], function () use ($router) {
     //TODO AUTHENTICATION
-//    Route::group(['middleware' => 'jwt.auth'], function () use ($router) {
-//        $router->get('/user/me', 'UserController@me');
-//    });
+    Route::group(['middleware' => 'jwt.auth'], function () use ($router) {
+        Route::group(['prefix' => '/user'], function () use ($router) {
+            $router->get('/user/me', 'UserController@me');
+        });
 
-    //TODO test role
-    Route::group(['middleware' => ['role:super-admin']], function () use ($router) {
-        $router->get('/user/me', 'UserController@me');
+        RouterHelper::resource($router, 'facilities', 'FacilityController');
     });
 
-    $router->post('/login', 'AuthController@login');
-    $router->post('/register', 'AuthController@register');
-    $router->post('/logout', 'AuthController@logout');
+    Route::group(['prefix' => 'auth'], function () use ($router) {
+        $router->post('/login/phone-number', 'AuthController@loginWithPhoneNumber');
+        $router->post('/login/facebook', 'AuthController@loginWithFacebook');
+        $router->post('/login/google', 'AuthController@loginWithGoogle');
+        $router->post('/register', 'AuthController@register');
+        $router->post('/refresh-token', 'AuthController@refreshToken');
+        $router->post('/logout', 'AuthController@logout');
+    });
 
     //TODO USER
-    RouterHelper::resource($router, '/users', 'UserController');
+    $router->get('/user/check-exist/{phoneNumber}', 'UserController@checkExist');
+    Route::group(['prefix' => '/stylist'], function () use ($router) {
+        $router->get('/{facilityId}', 'StylistController@getViaFacilityId');
+    });
 
     //TODO ROLE
     RouterHelper::resource($router, '/roles', 'RoleController');
     Route::post('/roles/create', 'RoleController@createRole');
 
+    //TODO test role
+    Route::group(['middleware' => ['role:super-admin']], function () use ($router) {
+
+    });
 });

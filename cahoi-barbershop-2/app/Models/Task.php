@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
 {
-    protected $table = 'task';
+    protected $table = 'tasks';
 
     protected $fillable = [
         'status',
@@ -16,38 +19,38 @@ class Task extends Model
         'stylist_id'
     ];
 
-    public function rating()
+    public function rating(): HasOne
     {
-        $this->hasOne(Rating::class, 'task_id', 'id');
+        return $this->hasOne(Rating::class, 'task_id', 'id');
     }
 
-    public function user()
+    public function user(): BelongsTo
     {
-        $this->belongsTo(User::class, 'customer_id', 'id');
+        return $this->belongsTo(User::class, 'customer_id', 'id');
     }
 
-    public function stylist()
+    public function stylist(): BelongsTo
     {
-        $this->belongsTo(Stylist::class, 'stylist_id', 'id');
+        return $this->belongsTo(Stylist::class, 'stylist_id', 'id');
     }
 
-    public function bill()
+    public function bill(): HasOne
     {
-        $this->hasOne(Bill::class, 'task_id', 'id');
+        return $this->hasOne(Bill::class, 'task_id', 'id');
     }
 
-    public function post()
+    public function post(): HasOne
     {
-        $this->hasOne(Post::class, 'task_id', 'id');
+        return $this->hasOne(Post::class, 'task_id', 'id');
     }
 
-    public function products()
+    public function products(): BelongsToMany
     {
-        $this->belongsToMany(Product::class, 'task_products', 'task_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'task_products', 'task_id', 'product_id');
     }
 
-    public function images()
+    public function images(): BelongsToMany
     {
-        $this->belongsToMany(Image::class, 'task_images', 'task_id', 'image_id');
+        return $this->belongsToMany(Image::class, 'task_images', 'task_id', 'image_id');
     }
 }

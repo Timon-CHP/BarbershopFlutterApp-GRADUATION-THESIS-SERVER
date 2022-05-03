@@ -22,6 +22,6 @@ class Facility extends Model
 
     public function images()
     {
-        $this->belongsToMany(Image::class, 'facility_images', 'facility_id', 'image_id');
+        return $this->belongsToMany(Image::class, 'facility_images', 'facility_id', 'image_id');
     }
 }
