@@ -36,6 +36,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'password',
         'status',
         'points',
+        'avatar',
         'rank_id',
         'created_by',
     ];

@@ -18,7 +18,7 @@ class CreateTasksTable extends Migration
             $table->boolean('status')->default(false);
             $table->dateTime('time_start_at');
             $table->string('notes', 250)->nullable();
-            $table->foreignId('custom_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('customer_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('stylist_id')->references('id')->on('stylists')->onDelete('cascade');
             $table->timestamps();
         });

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Rank;
-use App\Models\RankMember;
 use Illuminate\Database\Seeder;
 
 class RankTableSeeder extends Seeder

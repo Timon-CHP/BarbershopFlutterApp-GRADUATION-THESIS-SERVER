@@ -24,11 +24,21 @@ use YaangVu\LaravelBase\Helpers\RouterHelper;
 $router->group(['prefix' => '/api'], function () use ($router) {
     //TODO AUTHENTICATION
     Route::group(['middleware' => 'jwt.auth'], function () use ($router) {
+        //User
         Route::group(['prefix' => '/user'], function () use ($router) {
-            $router->get('/user/me', 'UserController@me');
+            $router->get('/me', 'UserController@me');
         });
+        RouterHelper::resource($router, 'users', 'UserController');
 
+        //Facility
         RouterHelper::resource($router, 'facilities', 'FacilityController');
+
+        //Type Product
+        RouterHelper::resource($router, 'type-products', 'TypeProductController');
+
+        //Product
+        RouterHelper::resource($router, 'products', 'ProductController');
+        $router->get('product/{typeId}', 'ProductController@getViaTypeProductId');
     });
 
     Route::group(['prefix' => 'auth'], function () use ($router) {

@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->boolean('status')->default(true)->comment("nếu = false thì tài khoản này đã bị khoá");
             $table->integer('points')->comment('điểm tích luỹ')->default(0);
             $table->rememberToken();
+            $table->text('avatar')->default('https://bit.ly/3kGo0rS');
             $table->foreignId('rank_id')->default(1)->references('id')->on('ranks')->onDelete('cascade');
             $table->timestamps();
         });

@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -37,5 +39,14 @@ class PermissionsSeeder extends Seeder
 
         $role3 = Role::create(['name' => 'super-admin']);
         $role3->givePermissionTo(Permission::all());
+
+        // create admin users
+        $user = User::create([
+            'phone_number' => "0973271208",
+            'name' => "admin",
+            'password' => Hash::make('12345678')
+        ]);
+
+        $user->assignRole($role3);
     }
 }
