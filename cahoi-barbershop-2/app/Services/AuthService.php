@@ -21,13 +21,11 @@ class AuthService extends BaseService
         $this->model = new User();
     }
 
-    #[ArrayShape(['message' => "string"])]
     public function logout(): array
     {
         auth()->logout();
         return [
-            'data' => true,
-            'message' => 'User logged off successfully!'
+            "data" => true
         ];
     }
 
@@ -69,7 +67,9 @@ class AuthService extends BaseService
                 $user->assignRole(['customer']);
             }
 
-            return $this->login($user);
+            return [
+                "data" => $this->login($user)
+            ];
         } catch (Throwable $exception) {
             return [
                 'data' => null,
@@ -117,7 +117,9 @@ class AuthService extends BaseService
                 $user->assignRole(['customer']);
             }
 
-            return $this->login($user);
+            return [
+                "data" => $this->login($user)
+            ];
         } catch (Throwable $exception) {
             return [
                 'data' => null,
@@ -132,11 +134,13 @@ class AuthService extends BaseService
 
         if (!$user || !Hash::check($request['password'], $user->password)) {
             return [
-                'data' => null
+                "data" => null
             ];
         }
 
-        return $this->login($user);
+        return [
+            "data" => $this->login($user)
+        ];
     }
 
     public function refreshToken(): array

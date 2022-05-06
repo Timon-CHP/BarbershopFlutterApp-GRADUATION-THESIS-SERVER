@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Throwable;
 use YaangVu\LaravelBase\Services\impl\BaseService;
+use function Illuminate\Auth\getData;
 
 class ProductService extends BaseService
 {
@@ -16,17 +16,10 @@ class ProductService extends BaseService
 
     public function getViaTypeProductId(Request $request, $typeId): array
     {
-        try {
-            return [
-                "data" => $this->model
-                    ->where("type_product_id", $typeId)
-                    ->get()
-            ];
-        } catch (Throwable $exception) {
-            return [
-                "data" => null,
-                "message" => $exception->getMessage()
-            ];
-        }
+        return [
+            "data" => $this->model
+                ->where("type_product_id", $typeId)
+                ->get()
+        ];
     }
 }

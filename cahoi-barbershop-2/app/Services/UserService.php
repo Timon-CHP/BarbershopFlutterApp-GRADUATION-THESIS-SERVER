@@ -6,6 +6,7 @@ use App\Models\User;
 use JetBrains\PhpStorm\ArrayShape;
 use Throwable;
 use YaangVu\LaravelBase\Services\impl\BaseService;
+use function Illuminate\Auth\getData;
 
 class UserService extends BaseService
 {
@@ -28,11 +29,11 @@ class UserService extends BaseService
 
         if ($user['data'] != null) {
             return [
-                'data' => true
+                "data" => true
             ];
         }
         return [
-            'data' => false
+            "data" => false
         ];
     }
 
@@ -40,7 +41,7 @@ class UserService extends BaseService
     {
         try {
             return [
-                'data' => $this->model->where('phone_number', '=', $phoneNumber)
+                "data" => $this->model->where('phone_number', '=', $phoneNumber)
             ];
         } catch (Throwable $exception) {
             return [
@@ -49,6 +50,4 @@ class UserService extends BaseService
             ];
         }
     }
-
-
 }

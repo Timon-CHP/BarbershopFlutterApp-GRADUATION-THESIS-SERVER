@@ -9,7 +9,7 @@ class Image extends Model
     protected $table = 'images';
 
     protected $fillable = [
-        'link',
+        'url',
     ];
 
     public function tasks()

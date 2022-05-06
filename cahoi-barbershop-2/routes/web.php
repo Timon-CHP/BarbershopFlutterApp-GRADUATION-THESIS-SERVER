@@ -39,6 +39,12 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         //Product
         RouterHelper::resource($router, 'products', 'ProductController');
         $router->get('product/{typeId}', 'ProductController@getViaTypeProductId');
+
+        //Task
+        Route::group(['prefix' => '/task'], function () use ($router) {
+            $router->post('/', "TaskController@createTask");
+            $router->post('/update-status', "TaskController@updateStatus");
+        });
     });
 
     Route::group(['prefix' => 'auth'], function () use ($router) {
@@ -54,6 +60,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
     $router->get('/user/check-exist/{phoneNumber}', 'UserController@checkExist');
     Route::group(['prefix' => '/stylist'], function () use ($router) {
         $router->get('/{facilityId}', 'StylistController@getViaFacilityId');
+        $router->get('/rating/{stylistId}', 'StylistController@getRatingViaStylistId');
     });
 
     //TODO ROLE

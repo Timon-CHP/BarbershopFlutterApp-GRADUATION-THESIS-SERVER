@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Calendar extends Model
 {
@@ -11,13 +12,10 @@ class Calendar extends Model
     protected $fillable = [
         'scheduled_start_at',
         'scheduled_end_at',
-        'check_in_at',
-        'check_out_at',
-        'stylist_id',
     ];
 
-    public function stylist()
+    public function stylist(): BelongsToMany
     {
-        return $this->belongsTo(Stylist::class, 'stylist_id', 'id');
+        return $this->belongsToMany(Stylist::class, 'calendar_stylist', 'stylist_id', 'calendar_id');
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Stylist extends Model
@@ -32,8 +33,8 @@ class Stylist extends Model
         return $this->belongsTo(Facility::class, 'facility_id', 'id');
     }
 
-    public function calendar(): HasMany
+    public function calendar(): BelongsToMany
     {
-        return $this->hasMany(Calendar::class, 'stylist_id', 'id');
+        return $this->belongsToMany(Calendar::class, 'calendar_stylist', 'calendar_id', 'stylist_id');
     }
 }

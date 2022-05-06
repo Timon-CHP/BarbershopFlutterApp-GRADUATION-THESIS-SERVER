@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\Stylist;
-use Throwable;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use YaangVu\LaravelBase\Services\impl\BaseService;
+use function Illuminate\Auth\getData;
 
 class StylistService extends BaseService
 {
@@ -13,21 +16,39 @@ class StylistService extends BaseService
         $this->model = new Stylist();
     }
 
-    public function getViaFacilityId($facilityId): array
+    /**
+     * @param Request $request
+     * @return Collection|array
+     */
+    public function getViaFacilityId(Request $request, int $facilityId): Collection|array
     {
-        try {
-            return [
-                "data" => $this->model->with('tasks')->get()
-//                    ->join('users', 'users.id', '=', 'stylists.user_id')
-//                    ->where('facility_id', $facilityId)
-//                    ->select('stylists.id')
-//                    ->get()
-            ];
-        } catch (Throwable $exception) {
-            return [
-                "data" => null,
-                "message" => $exception->getMessage()
-            ];
-        }
+        $date = $request->date;
+
+        return [
+            "data" => $this->model::query()->with('user')
+                ->join('calendar_stylist', 'calendar_stylist.stylist_id', '=', 'stylists.id')
+                ->join('calendars', 'calendars.id', '=', 'calendar_stylist.calendar_id')
+                ->join('facilities', 'facilities.id', '=', 'stylists.facility_id')
+                ->where('stylists.facility_id', $facilityId)
+                ->when($date, function ($q) use ($date) {
+                    $q->whereDate('calendars.scheduled_start_at', $date);
+                })
+                ->get('stylists.*')
+        ];
+    }
+
+    public function getRatingViaStylistId(int $stylistId): array
+    {
+        return [
+            "data" => $this->model::query()
+                ->join('tasks', 'tasks.stylist_id', '=', 'stylists.id')
+                ->join('ratings', 'ratings.task_id', '=', 'tasks.id')
+                ->where('stylists.id', $stylistId)
+                ->select(
+                    DB::raw('round(AVG(communication_rate),1) as avg_communication_rate'),
+                    DB::raw('round(AVG(skill_rate),1) as avg_skill_rate')
+                )
+                ->first()
+        ];
     }
 }

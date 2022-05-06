@@ -70,6 +70,9 @@ class AddCreatedByToTables extends Migration
         Schema::table('likes', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
+        Schema::table('calendar_stylist', function (Blueprint $table) {
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
+        });
     }
 
     /**
