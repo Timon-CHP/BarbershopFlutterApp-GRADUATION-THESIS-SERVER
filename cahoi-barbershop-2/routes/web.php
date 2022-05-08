@@ -44,6 +44,30 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         Route::group(['prefix' => '/task'], function () use ($router) {
             $router->post('/', "TaskController@createTask");
             $router->post('/update-status', "TaskController@updateStatus");
+            $router->get('/today', "TaskController@getTaskToday");
+            $router->get('/completed', "TaskController@getTaskCompleted");
+            $router->get('/uncompleted', "TaskController@getTaskUncompleted");
+            $router->get('/detail', "TaskController@getDetail");
+            $router->get('/customer', "TaskController@getViaCustomerId");
+        });
+
+        //Bill
+        Route::group(['prefix' => '/bill'], function () use ($router) {
+            $router->post('/', "BillController@createBill");
+        });
+
+        //Discount
+        Route::group(['prefix' => '/discount'], function () use ($router) {
+            $router->get('/code', "DiscountController@getViaCode");
+        });
+
+        //Post
+        Route::group(['prefix' => '/post'], function () use ($router) {
+            $router->post('/', "PostController@createPost");
+            $router->delete('/', "PostController@deleteMyPost");
+            $router->get('/in-month', "PostController@getViaMonth");
+            $router->get('/wall', "PostController@getViaUserId");
+            $router->post('/like', "PostController@like");
         });
     });
 

@@ -37,4 +37,10 @@ class Stylist extends Model
     {
         return $this->belongsToMany(Calendar::class, 'calendar_stylist', 'calendar_id', 'stylist_id');
     }
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

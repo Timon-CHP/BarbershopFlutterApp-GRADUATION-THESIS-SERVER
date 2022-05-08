@@ -46,22 +46,10 @@ class AddCreatedByToTables extends Migration
         Schema::table('task_products', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
-        Schema::table('images', function (Blueprint $table) {
-            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
-        });
         Schema::table('ranks', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
         Schema::table('stylists', function (Blueprint $table) {
-            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
-        });
-        Schema::table('task_images', function (Blueprint $table) {
-            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
-        });
-        Schema::table('product_images', function (Blueprint $table) {
-            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
-        });
-        Schema::table('facility_images', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
         Schema::table('ratings', function (Blueprint $table) {
@@ -71,6 +59,12 @@ class AddCreatedByToTables extends Migration
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
         Schema::table('calendar_stylist', function (Blueprint $table) {
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
+        });
+        Schema::table('image_products', function (Blueprint $table) {
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
+        });
+        Schema::table('image_tasks', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
     }

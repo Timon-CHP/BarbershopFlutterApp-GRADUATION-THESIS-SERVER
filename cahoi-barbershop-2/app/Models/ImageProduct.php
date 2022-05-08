@@ -5,20 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Rating extends Model
+class ImageProduct extends Model
 {
-    protected $table = 'ratings';
+    protected $table = 'image_products';
 
     protected $fillable = [
-        'communication_rate',
-        'skill_rate',
-        'comment',
-        'task_id',
+        "link",
+        "product_id"
     ];
 
-    public function task(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(Task::class, 'task_id', 'id');
+        return $this->belongsTo(Product::class, 'product_id', 'id');
     }
 
     protected $hidden = [

@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -23,13 +25,19 @@ class Product extends Model
         return $this->belongsToMany(Task::class, 'task_products', 'product_id', 'task_id');
     }
 
-    public function type()
+    public function type(): BelongsTo
     {
         return $this->belongsTo(TypeProduct::class, 'type_product_id', 'id');
     }
 
-    public function images()
+    public function images(): HasMany
     {
-        return $this->belongsToMany(Image::class, 'product_images', 'product_id', 'image_id');
+        return $this->hasMany(ImageProduct::class, 'product_id', 'id');
     }
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

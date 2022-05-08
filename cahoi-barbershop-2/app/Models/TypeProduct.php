@@ -17,4 +17,10 @@ class TypeProduct extends Model
     {
         return $this->hasMany(Product::class, 'type_product_id', 'id');
     }
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

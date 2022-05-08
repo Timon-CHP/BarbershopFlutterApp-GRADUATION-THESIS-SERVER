@@ -18,11 +18,17 @@ class Post extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'like', 'user_id', 'post_id');
+        return $this->belongsToMany(User::class, 'likes', 'user_id', 'post_id');
     }
 
     public function task()
     {
         return $this->belongsTo(Task::class, 'task_id', 'id');
     }
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

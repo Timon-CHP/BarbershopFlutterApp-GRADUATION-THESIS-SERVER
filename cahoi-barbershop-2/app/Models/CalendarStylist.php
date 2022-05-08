@@ -12,4 +12,10 @@ class CalendarStylist extends Model
         'stylist_id',
         'calendar_id',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

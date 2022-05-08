@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CalendarStylistTableSeeder::class);
         $this->call(TasksTableSeeder::class);
         $this->call(RatingTableSeeder::class);
+        $this->call(DiscountsTableSeeder::class);
     }
 }

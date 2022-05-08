@@ -15,8 +15,8 @@ class CreateBillsTable extends Migration
     {
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->integer('total');
-            $table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
+            $table->float('total');
+            $table->foreignId('task_id')->unique()->references('id')->on('tasks')->onDelete('cascade');
             $table->foreignId('discount_id')->nullable()->references('id')->on('discounts')->onDelete('cascade');
             $table->timestamps();
         });

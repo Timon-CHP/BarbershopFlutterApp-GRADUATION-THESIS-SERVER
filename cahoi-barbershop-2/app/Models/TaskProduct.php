@@ -12,4 +12,10 @@ class TaskProduct extends Model
         'task_id',
         'product_id',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

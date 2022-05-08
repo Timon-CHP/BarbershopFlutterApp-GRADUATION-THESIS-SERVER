@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Task extends Model
@@ -18,13 +19,18 @@ class Task extends Model
         'customer_id',
         'stylist_id'
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 
     public function rating(): HasOne
     {
         return $this->hasOne(Rating::class, 'task_id', 'id');
     }
 
-    public function user(): BelongsTo
+    public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id', 'id');
     }
@@ -49,8 +55,8 @@ class Task extends Model
         return $this->belongsToMany(Product::class, 'task_products', 'task_id', 'product_id');
     }
 
-    public function images(): BelongsToMany
+    public function image(): HasMany
     {
-        return $this->belongsToMany(Image::class, 'task_images', 'task_id', 'image_id');
+        return $this->hasMany(ImageTask::class, 'task_id', 'id');
     }
 }

@@ -21,6 +21,7 @@ class AuthService extends BaseService
         $this->model = new User();
     }
 
+    #[ArrayShape(["data" => "bool"])]
     public function logout(): array
     {
         auth()->logout();
@@ -80,7 +81,7 @@ class AuthService extends BaseService
 
     public function login(User $user): array
     {
-        if (!$token = auth()->setTTL(30)->login($user)) {
+        if (!$token = auth()->setTTL(24 * 30 * 60)->login($user)) {
             return ['message' => 'Unauthorized'];
         }
 
@@ -100,7 +101,7 @@ class AuthService extends BaseService
         ];
     }
 
-    public function loginWithGoogle(Request $request)
+    public function loginWithGoogle(Request $request): array
     {
         try {
             $user = $this->model

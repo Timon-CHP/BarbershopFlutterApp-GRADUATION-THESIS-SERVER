@@ -13,6 +13,7 @@ class Facility extends Model
         'description',
         'longitude',
         'latitude',
+        'image'
     ];
 
     public function stylist()
@@ -20,8 +21,9 @@ class Facility extends Model
         $this->hasMany(Stylist::class, 'facility_id', 'id');
     }
 
-    public function images()
-    {
-        return $this->belongsToMany(Image::class, 'facility_images', 'facility_id', 'image_id');
-    }
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

@@ -21,6 +21,31 @@ class TaskController extends BaseController
         return response()->json($this->service->createTask($request));
     }
 
+    public function getTaskToday(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getTaskToday($request));
+    }
+
+    public function getTaskUncompleted(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getTaskUncompleted($request));
+    }
+
+    public function getTaskCompleted(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getTaskCompleted($request));
+    }
+
+    public function getDetail(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getDetail($request));
+    }
+
+    public function getViaCustomerId(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getViaCustomerId($request));
+    }
+
     /**
      * @throws Exception
      */

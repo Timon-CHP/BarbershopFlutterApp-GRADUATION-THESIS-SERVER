@@ -17,7 +17,7 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name');
             $table->integer('duration');
-            $table->integer('price');
+            $table->float('price');
             $table->string('sort_description');
             $table->text('description');
             $table->foreignId('type_product_id')->references('id')->on('type_products')->onDelete('cascade');

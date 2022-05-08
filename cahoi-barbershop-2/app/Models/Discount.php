@@ -19,4 +19,10 @@ class Discount extends Model
     {
         return $this->hasMany(Bill::class, 'discount_id');
     }
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

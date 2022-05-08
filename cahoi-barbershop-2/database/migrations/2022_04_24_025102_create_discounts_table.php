@@ -18,7 +18,7 @@ class CreateDiscountsTable extends Migration
             $table->string('code', 30)->unique();
             $table->string('name', 30)->nullable();
             $table->text('description')->nullable();
-            $table->text('reduction')->comment("đây là % giảm giá khi áp dụng mã giảm giá")->nullable();
+            $table->float('reduction')->comment("đây là % giảm giá khi áp dụng mã giảm giá")->nullable();
             $table->timestamps();
         });
     }

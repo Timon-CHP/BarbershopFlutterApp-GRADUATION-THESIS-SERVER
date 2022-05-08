@@ -18,4 +18,10 @@ class Rank extends Model
     {
         return $this->hasMany(User::class, 'rank_id', 'id');
     }
+
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+        'created_by',
+    ];
 }

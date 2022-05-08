@@ -3,25 +3,20 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Bill extends Model
+class ImageTask extends Model
 {
-    protected $table = 'bills';
+    protected $table = 'image_tasks';
 
     protected $fillable = [
-        'total',
-        'task_id',
-        'discount_id'
+        'link',
+        'task_id'
     ];
 
-    public function task()
+    public function task(): BelongsTo
     {
         return $this->belongsTo(Task::class, 'task_id', 'id');
-    }
-
-    public function discount()
-    {
-        return $this->belongsTo(Discount::class, 'discount_id', 'id');
     }
 
     protected $hidden = [

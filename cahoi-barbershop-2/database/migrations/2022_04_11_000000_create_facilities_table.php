@@ -19,6 +19,7 @@ class CreateFacilitiesTable extends Migration
             $table->string('description', 255)->nullable();
             $table->string('longitude', 30)->comment('kinh độ');
             $table->string('latitude', 30)->comment('vĩ độ');
+            $table->text('image')->nullable();
             $table->timestamps();
         });
     }
