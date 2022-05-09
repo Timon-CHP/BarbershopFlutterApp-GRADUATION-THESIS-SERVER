@@ -20,8 +20,8 @@ class UserController extends BaseController
         return response()->json($this->service->me());
     }
 
-    public function checkExist(Request $request, $phoneNumber): JsonResponse
+    public function checkExist(Request $request): JsonResponse
     {
-        return response()->json($this->service->checkExist($phoneNumber));
+        return response()->json($this->service->checkExist($request));
     }
 }

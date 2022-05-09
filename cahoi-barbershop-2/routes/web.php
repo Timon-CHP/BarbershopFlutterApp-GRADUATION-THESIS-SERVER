@@ -77,11 +77,12 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         $router->post('/login/google', 'AuthController@loginWithGoogle');
         $router->post('/register', 'AuthController@register');
         $router->post('/refresh-token', 'AuthController@refreshToken');
-        $router->post('/logout', 'AuthController@logout');
+        $router->get('/logout', 'AuthController@logout');
     });
 
     //TODO USER
-    $router->get('/user/check-exist/{phoneNumber}', 'UserController@checkExist');
+    $router->get('/user/check-exist', 'UserController@checkExist');
+
     Route::group(['prefix' => '/stylist'], function () use ($router) {
         $router->get('/{facilityId}', 'StylistController@getViaFacilityId');
         $router->get('/rating/{stylistId}', 'StylistController@getRatingViaStylistId');

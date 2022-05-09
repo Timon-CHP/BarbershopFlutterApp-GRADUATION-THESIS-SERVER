@@ -39,30 +39,48 @@ class AuthService extends BaseService
                 'password' => Hash::make($request['password'])
             ]);
 
+
+            if (!$user) {
+                return [
+                    "data" => false,
+                ];
+            }
+
             $user->assignRole(['customer']);
+
             return [
-                "data" => $user,
+                "data" => true,
             ];
+
         } catch (Throwable) {
             return [
                 "data" => null,
-                'message' => __('auth.failed')
+                'message' => __('fail!')
             ];
         }
     }
 
     public function loginWithFacebook(Request $request): array
     {
+        $rule = [
+            'name' => 'required',
+            'provider_id' => 'required',
+        ];
+
+        $this->doValidate($request, $rule);
+
         try {
             $user = $this->model
                 ->where("type_provider", "facebook")
-                ->where("provider_id", $request['provider_id'])->first();
+                ->where("provider_id", $request['provider_id'])
+                ->first();
+
             if (!$user) {
                 $user = $this->model->create([
-                    "name" => $request['name'],
-                    "email" => $request['email'],
+                    "name" => $request->name,
+                    "email" => $request->email,
                     "type_provider" => "facebook",
-                    "provider_id" => $request['provider_id'],
+                    "provider_id" => $request->provider_id,
                 ]);
 
                 $user->assignRole(['customer']);

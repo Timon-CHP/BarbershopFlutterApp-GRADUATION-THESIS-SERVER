@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
-use Throwable;
 use YaangVu\LaravelBase\Services\impl\BaseService;
 use function Illuminate\Auth\getData;
 
@@ -23,31 +23,26 @@ class UserService extends BaseService
         ];
     }
 
-    public function checkExist($phoneNumber): array
+    public function checkExist(Request $request): array
     {
-        $user = $this->getByPhoneNumber($phoneNumber);
-
-        if ($user['data'] != null) {
-            return [
-                "data" => true
-            ];
-        }
-        return [
-            "data" => false
+        $rule = [
+            "phone_number" => "required"
         ];
-    }
 
-    public function getByPhoneNumber($phoneNumber): array
-    {
-        try {
+        $this->doValidate($request, $rule);
+
+        $user = $this->model::query()
+            ->where('phone_number', $request->phone_number)
+            ->first();
+
+        if (!$user) {
             return [
-                "data" => $this->model->where('phone_number', '=', $phoneNumber)
-            ];
-        } catch (Throwable $exception) {
-            return [
-                'data' => null,
-                'message' => $exception->getMessage()
+                "data" => false
             ];
         }
+
+        return [
+            "data" => true
+        ];
     }
 }

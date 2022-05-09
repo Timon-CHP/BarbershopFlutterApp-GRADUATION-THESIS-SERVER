@@ -22,8 +22,18 @@ class TaskService extends BaseService
 
     function createTask(Request $request): array
     {
+        $rule = [
+            'time_slot_id' => 'required',
+            'date' => 'required',
+            'customer_id' => 'required',
+            'stylist_id' => 'required',
+        ];
+
+        $this->doValidate($request, $rule);
+
         $task = $this->model->create([
-            "time_start_at" => $request->time_start_at,
+            "time_slot_id" => $request->time_slot_id,
+            "date" => $request->date,
             "notes" => $request->notes,
             "customer_id" => $request->customer_id,
             "stylist_id" => $request->stylist_id,
@@ -59,7 +69,8 @@ class TaskService extends BaseService
 
         $task = $this->model::query()->with('customer')
             ->where('stylist_id', $request->stylist_id)
-            ->whereDay('time_start_at', Carbon::today());
+            //TODO fix
+            ->whereDay('date', Carbon::today());
         return [
             "data" => $task->paginate(10)
         ];

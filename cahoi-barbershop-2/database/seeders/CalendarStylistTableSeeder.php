@@ -14,8 +14,8 @@ class CalendarStylistTableSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 7; $i++) {
-            for ($j = $i; $j < 10; $j++) {
+        for ($i = 1; $i <= 3; $i++) {
+            for ($j = $i; $j < 50; $j++) {
                 CalendarStylist::create([
                     "stylist_id" => $j,
                     "calendar_id" => $i,

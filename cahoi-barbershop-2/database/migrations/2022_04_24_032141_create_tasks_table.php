@@ -16,10 +16,11 @@ class CreateTasksTable extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->boolean('status')->default(false);
-            $table->dateTime('time_start_at');
             $table->string('notes', 250)->nullable();
+            $table->date('date');
             $table->foreignId('customer_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreignId('stylist_id')->references('id')->on('stylists')->onDelete('cascade');
+            $table->foreignId('time_slot_id')->references('id')->on('time_slots')->onDelete('cascade');
             $table->timestamps();
         });
     }

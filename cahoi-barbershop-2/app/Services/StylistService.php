@@ -6,6 +6,7 @@ use App\Models\Stylist;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 use YaangVu\LaravelBase\Services\impl\BaseService;
 use function Illuminate\Auth\getData;
 
@@ -20,10 +21,15 @@ class StylistService extends BaseService
      * @param Request $request
      * @return Collection|array
      */
-    public function getViaFacilityId(Request $request, int $facilityId): Collection|array
+    public function getViaFacilityId(Request $request, $facilityId): Collection|array
     {
-        $date = $request->date;
+        $rule = [
+            "date" => "required"
+        ];
 
+        $this->doValidate($request, $rule);
+
+        $date = $request->date;
         return [
             "data" => $this->model::query()->with('user')
                 ->join('calendar_stylist', 'calendar_stylist.stylist_id', '=', 'stylists.id')
@@ -33,10 +39,12 @@ class StylistService extends BaseService
                 ->when($date, function ($q) use ($date) {
                     $q->whereDate('calendars.scheduled_start_at', $date);
                 })
-                ->get('stylists.*')
+                ->select('stylists.*', 'calendar_stylist.*')
+                ->get()
         ];
     }
 
+    #[ArrayShape(["data" => "mixed"])]
     public function getRatingViaStylistId(int $stylistId): array
     {
         return [

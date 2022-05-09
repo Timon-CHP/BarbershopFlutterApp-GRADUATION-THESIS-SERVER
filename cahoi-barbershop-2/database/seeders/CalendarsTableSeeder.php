@@ -19,8 +19,8 @@ class CalendarsTableSeeder extends Seeder
         for ($j = 0; $j < 7; $j++) {
             $timeP = $now->addDays($j);
             Calendar::create([
-                "scheduled_start_at" => $timeP->setTime(8, 0, 0)->toDateTime(),
-                "scheduled_end_at" => $timeP->setTime(18, 0, 0)->toDateTime(),
+                "scheduled_start_at" => $timeP->setTime(8, 0)->toDateTime(),
+                "scheduled_end_at" => $timeP->setTime(18, 0)->toDateTime(),
             ]);
 
         }
