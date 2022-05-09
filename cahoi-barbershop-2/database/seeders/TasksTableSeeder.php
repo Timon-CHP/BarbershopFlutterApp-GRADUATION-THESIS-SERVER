@@ -27,7 +27,7 @@ class TasksTableSeeder extends Seeder
                     "date" => Carbon::today(),
                     "time_slot_id" => $j,
                     "customer_id" => random_int(52, 80),
-                    "stylist_id" => random_int(1, 10)
+                    "stylist_id" => $i
                 ]);
 
                 TaskProduct::create([

@@ -38,7 +38,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'points',
         'avatar',
         'rank_id',
-        'created_by',
     ];
 
     public function rank(): BelongsTo

@@ -61,6 +61,12 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->get('/code', "DiscountController@getViaCode");
         });
 
+        //Time Slot
+        Route::group(['prefix' => 'time-slot'], function () use ($router) {
+            $router->get('/', "TimeSlotController@getTimeSlot");
+            $router->get('/{stylistId}', "TimeSlotController@getTimeSlotViaStylistId");
+        });
+
         //Post
         Route::group(['prefix' => '/post'], function () use ($router) {
             $router->post('/', "PostController@createPost");

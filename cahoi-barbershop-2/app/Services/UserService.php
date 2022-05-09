@@ -18,8 +18,12 @@ class UserService extends BaseService
     #[ArrayShape(["data" => "\Illuminate\Contracts\Auth\Authenticatable|null"])]
     public function me(): array
     {
+
         return [
-            "data" => auth()->user(),
+            "data" => $this->model::query()
+                ->with('roles')
+                ->with('rank')
+                ->find(auth()->user()->id)
         ];
     }
 

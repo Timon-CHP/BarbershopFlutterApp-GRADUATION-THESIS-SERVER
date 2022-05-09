@@ -25,8 +25,8 @@ class TaskService extends BaseService
         $rule = [
             'time_slot_id' => 'required',
             'date' => 'required',
-            'customer_id' => 'required',
             'stylist_id' => 'required',
+            'products' => 'required|array|min:1',
         ];
 
         $this->doValidate($request, $rule);
@@ -35,7 +35,7 @@ class TaskService extends BaseService
             "time_slot_id" => $request->time_slot_id,
             "date" => $request->date,
             "notes" => $request->notes,
-            "customer_id" => $request->customer_id,
+            "customer_id" => auth()->user()->id,
             "stylist_id" => $request->stylist_id,
         ]);
 

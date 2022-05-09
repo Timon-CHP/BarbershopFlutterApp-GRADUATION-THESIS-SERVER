@@ -29,7 +29,7 @@ class StylistsTableSeeder extends Seeder
 
             Stylist::create([
                 'user_id' => $user->id,
-                'facility_id' => $i % 6 == 0 ? 1 : $i % 6
+                'facility_id' => $i % 7 == 0 ? 1 : $i % 7
             ]);
         }
     }
