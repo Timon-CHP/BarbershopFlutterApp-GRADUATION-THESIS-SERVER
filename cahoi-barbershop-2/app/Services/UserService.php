@@ -3,10 +3,10 @@
 namespace App\Services;
 
 use App\Models\User;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use YaangVu\LaravelBase\Services\impl\BaseService;
-use function Illuminate\Auth\getData;
 
 class UserService extends BaseService
 {
@@ -48,5 +48,14 @@ class UserService extends BaseService
         return [
             "data" => true
         ];
+    }
+
+    #[ArrayShape(["data" => "\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection"])]
+    public function searchUser(Request $request): LengthAwarePaginator
+    {
+        return $this->model::query()->with("roles")
+            ->where('name', 'LIKE', '%' . $request->search_string . '%')
+            ->where('id', '<>', auth()->user()->id)
+            ->paginate(10);
     }
 }

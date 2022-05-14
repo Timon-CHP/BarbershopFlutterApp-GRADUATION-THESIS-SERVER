@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
 use YaangVu\LaravelBase\Services\impl\BaseService;
-use function Illuminate\Auth\getData;
 
 class StylistService extends BaseService
 {
@@ -17,11 +16,8 @@ class StylistService extends BaseService
         $this->model = new Stylist();
     }
 
-    /**
-     * @param Request $request
-     * @return Collection|array
-     */
-    public function getViaFacilityId(Request $request, $facilityId): Collection|array
+    #[ArrayShape(["data" => "array|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection"])]
+    public function getViaFacility(Request $request, $facilityId): Collection|array
     {
         $rule = [
             "date" => "required"

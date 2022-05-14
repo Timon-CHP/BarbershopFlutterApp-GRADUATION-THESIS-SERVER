@@ -72,7 +72,8 @@ class AuthService extends BaseService
         try {
             $user = $this->model
                 ->where("type_provider", "facebook")
-                ->where("provider_id", $request['provider_id'])
+                ->Where("provider_id", $request['provider_id'])
+                ->orWhere("email", $request['email'])
                 ->first();
 
             if (!$user) {
@@ -123,8 +124,10 @@ class AuthService extends BaseService
     {
         try {
             $user = $this->model
-                ->where("type_provider", "google")
-                ->where("provider_id", $request['provider_id'])->first();
+                ->where("type_provider", '=', "google")
+                ->Where("provider_id", $request['provider_id'])
+                ->orWhere("email", $request['email'])
+                ->first();
             if (!$user) {
                 $user = $this->model->create([
                     "name" => $request['name'],

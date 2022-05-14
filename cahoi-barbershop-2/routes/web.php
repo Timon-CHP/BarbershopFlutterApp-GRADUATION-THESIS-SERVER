@@ -32,6 +32,10 @@ $router->group(['prefix' => '/api'], function () use ($router) {
 
         //Facility
         RouterHelper::resource($router, 'facilities', 'FacilityController');
+        Route::group(['prefix' => '/facility'], function () use ($router) {
+            $router->get('/stylist', 'FacilityController@getViaUserId');
+        });
+
 
         //Type Product
         RouterHelper::resource($router, 'type-products', 'TypeProductController');
@@ -90,16 +94,20 @@ $router->group(['prefix' => '/api'], function () use ($router) {
     $router->get('/user/check-exist', 'UserController@checkExist');
 
     Route::group(['prefix' => '/stylist'], function () use ($router) {
-        $router->get('/{facilityId}', 'StylistController@getViaFacilityId');
+        $router->get('/{facilityId}', 'StylistController@getViaFacility');
         $router->get('/rating/{stylistId}', 'StylistController@getRatingViaStylistId');
     });
 
-    //TODO ROLE
-    RouterHelper::resource($router, '/roles', 'RoleController');
-    Route::post('/roles/create', 'RoleController@createRole');
-
     //TODO test role
     Route::group(['middleware' => ['role:super-admin']], function () use ($router) {
+        //User
+        Route::group(['prefix' => '/user'], function () use ($router) {
+            $router->get('/search', 'UserController@searchUser');
+        });
 
+        //Role
+        RouterHelper::resource($router, 'roles', 'RoleController');
+        $router->post('/role/sync-role', 'RoleController@syncRoleViaUser');
+        $router->get('/role/except', 'RoleController@getAllExceptSuperAdmin');
     });
 });

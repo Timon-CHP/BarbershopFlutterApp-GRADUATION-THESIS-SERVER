@@ -33,20 +33,24 @@ class PermissionsSeeder extends Seeder
         $role1->givePermissionTo('publish articles');
         $role1->givePermissionTo('delete articles');
 
-        $role2 = Role::create(['name' => 'admin']);
+        $role2 = Role::create(['name' => 'stylist']);
         $role2->givePermissionTo('publish articles');
         $role2->givePermissionTo('unpublish articles');
 
-        $role3 = Role::create(['name' => 'super-admin']);
-        $role3->givePermissionTo(Permission::all());
+        $role3 = Role::create(['name' => 'manage']);
+        $role3->givePermissionTo('publish articles');
+        $role3->givePermissionTo('unpublish articles');
+
+        $role4 = Role::create(['name' => 'super-admin']);
+        $role4->givePermissionTo(Permission::all());
 
         // create admin users
         $user = User::create([
-            'phone_number' => "0973271208",
+            'phone_number' => "+84973271208",
             'name' => "admin",
-            'password' => Hash::make('12345678')
+            'password' => Hash::make('Lequangtho12a3')
         ]);
 
-        $user->assignRole($role3);
+        $user->assignRole($role4);
     }
 }

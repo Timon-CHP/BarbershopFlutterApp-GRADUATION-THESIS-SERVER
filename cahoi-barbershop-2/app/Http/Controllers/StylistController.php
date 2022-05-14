@@ -15,9 +15,9 @@ class StylistController extends BaseController
         parent::__construct();
     }
 
-    public function getViaFacilityId(Request $request, $facilityId): JsonResponse
+    public function getViaFacility(Request $request, $facilityId): JsonResponse
     {
-        return response()->json($this->service->getViaFacilityId($request, $facilityId));
+        return response()->json($this->service->getViaFacility($request, $facilityId));
     }
 
     public function getRatingViaStylistId(Request $request, $stylistId): JsonResponse

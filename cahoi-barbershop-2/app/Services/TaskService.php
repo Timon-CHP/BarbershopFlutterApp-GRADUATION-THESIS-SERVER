@@ -4,10 +4,12 @@ namespace App\Services;
 
 use App\Models\Image;
 use App\Models\ImageTask;
+use App\Models\Stylist;
 use App\Models\Task;
 use App\Models\TaskProduct;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
@@ -59,21 +61,27 @@ class TaskService extends BaseService
     }
 
     #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
-    function getTaskToday(Request $request): array
+    function getTaskToday(Request $request): LengthAwarePaginator
     {
-        $rule = [
-            'stylist_id' => 'required|exists:stylists,id',
-        ];
+//        $rule = [
+//            'stylist_id' => 'required|exists:stylists,id',
+//        ];
 
-        $this->doValidate($request, $rule);
+//        $this->doValidate($request, $rule);
 
-        $task = $this->model::query()->with('customer')
-            ->where('stylist_id', $request->stylist_id)
-            //TODO fix
-            ->whereDay('date', Carbon::today());
-        return [
-            "data" => $task->paginate(10)
-        ];
+        $stylist = Stylist::query()
+            ->where('user_id', auth()->user()->id)
+            ->first();
+
+        $task = $this->model::query()
+            ->with('customer')
+            ->with('products')
+            ->with('image')
+            ->with('time')
+            ->where('stylist_id', $stylist->id)
+            ->whereDate('date', Carbon::today());
+
+        return $task->paginate(10);
     }
 
     #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
@@ -120,10 +128,12 @@ class TaskService extends BaseService
         $this->doValidate($request, $rule);
 
         $task = $this->model::query()
+            ->with('customer')
             ->with('products')
             ->with('image')
+            ->with('time')
             ->where('id', $request->task_id)
-            ->get();
+            ->first();
 
         return [
             "data" => $task

@@ -24,13 +24,15 @@ class StylistsTableSeeder extends Seeder
             $user = User::create([
                 'name' => $faker->name,
                 'phone_number' => $faker->phoneNumber,
-                'password' => Hash::make('12345678'),
+                'password' => Hash::make('Lequangtho12a3'),
             ]);
 
             Stylist::create([
                 'user_id' => $user->id,
                 'facility_id' => $i % 7 == 0 ? 1 : $i % 7
             ]);
+
+            $user->assignRole(['stylist']);
         }
     }
 }

@@ -20,6 +20,11 @@ class UserController extends BaseController
         return response()->json($this->service->me());
     }
 
+    public function searchUser(Request $request): JsonResponse
+    {
+        return response()->json($this->service->searchUser($request));
+    }
+
     public function checkExist(Request $request): JsonResponse
     {
         return response()->json($this->service->checkExist($request));

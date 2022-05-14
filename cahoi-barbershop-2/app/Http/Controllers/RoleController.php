@@ -19,4 +19,14 @@ class RoleController extends BaseController
     {
         return response()->json($this->service->createRole($request));
     }
+
+    public function getAllExceptSuperAdmin(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getAllExceptSuperAdmin());
+    }
+
+    public function syncRoleViaUser(Request $request): JsonResponse
+    {
+        return response()->json($this->service->syncRoleViaUser($request));
+    }
 }

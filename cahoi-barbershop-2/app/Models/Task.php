@@ -31,6 +31,11 @@ class Task extends Model
         return $this->hasOne(Rating::class, 'task_id', 'id');
     }
 
+    public function time(): BelongsTo
+    {
+        return $this->belongsTo(TimeSlot::class, 'time_slot_id', 'id');
+    }
+
     public function customer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'customer_id', 'id');
