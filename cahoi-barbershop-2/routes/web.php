@@ -47,8 +47,8 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         //Task
         Route::group(['prefix' => '/task'], function () use ($router) {
             $router->post('/', "TaskController@createTask");
+            $router->get('/', "TaskController@getTaskViaDay");
             $router->post('/update-status', "TaskController@updateStatus");
-            $router->get('/today', "TaskController@getTaskToday");
             $router->get('/completed', "TaskController@getTaskCompleted");
             $router->get('/uncompleted', "TaskController@getTaskUncompleted");
             $router->get('/detail', "TaskController@getDetail");
@@ -90,13 +90,12 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         $router->get('/logout', 'AuthController@logout');
     });
 
-    //TODO USER
-    $router->get('/user/check-exist', 'UserController@checkExist');
-
     Route::group(['prefix' => '/stylist'], function () use ($router) {
         $router->get('/{facilityId}', 'StylistController@getViaFacility');
         $router->get('/rating/{stylistId}', 'StylistController@getRatingViaStylistId');
     });
+
+    $router->get('/user/check-exist', 'UserController@checkExist');
 
     //TODO test role
     Route::group(['middleware' => ['role:super-admin']], function () use ($router) {

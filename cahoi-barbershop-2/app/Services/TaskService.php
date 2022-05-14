@@ -61,27 +61,37 @@ class TaskService extends BaseService
     }
 
     #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
-    function getTaskToday(Request $request): LengthAwarePaginator
+    function getTaskViaDay(Request $request): LengthAwarePaginator
     {
-//        $rule = [
-//            'stylist_id' => 'required|exists:stylists,id',
-//        ];
+        $rule = [
+            'add_day' => 'required',
+        ];
+        $status = $request->status;
+        $this->doValidate($request, $rule);
 
-//        $this->doValidate($request, $rule);
 
         $stylist = Stylist::query()
             ->where('user_id', auth()->user()->id)
             ->first();
 
-        $task = $this->model::query()
+        return $this->model::query()
             ->with('customer')
             ->with('products')
             ->with('image')
             ->with('time')
             ->where('stylist_id', $stylist->id)
-            ->whereDate('date', Carbon::today());
+            ->whereDate('date', Carbon::today()->addDay($request->add_day))
+            ->when($status !== null, function ($q) use ($status) {
+                $q->where('status', $status);
+            })
+            ->paginate(10);
+//        if ($status === null)
+//            return $task->paginate(10);
+//        else {
+//            $task->where("status", $status);
+//            return $task->paginate(10);
+//        }
 
-        return $task->paginate(10);
     }
 
     #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]

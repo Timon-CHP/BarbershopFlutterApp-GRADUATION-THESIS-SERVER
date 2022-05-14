@@ -21,9 +21,9 @@ class TaskController extends BaseController
         return response()->json($this->service->createTask($request));
     }
 
-    public function getTaskToday(Request $request): JsonResponse
+    public function getTaskViaDay(Request $request): JsonResponse
     {
-        return response()->json($this->service->getTaskToday($request));
+        return response()->json($this->service->getTaskViaDay($request));
     }
 
     public function getTaskUncompleted(Request $request): JsonResponse
