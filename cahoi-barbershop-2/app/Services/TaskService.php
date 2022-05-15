@@ -158,21 +158,20 @@ class TaskService extends BaseService
     }
 
     #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
-    public function getHistory(Request $request): array
+    public function getHistory(Request $request): LengthAwarePaginator
     {
-        return [
-            "data" => $this->model::query()
-                ->with('image')
-                ->with('products')
-                ->with('image')
-                ->with('time')
-                ->with("stylist", function ($query) {
-                    $query->with('facility');
-                })
-                ->with('bill')
-                ->orderByDesc('tasks.date')
-                ->where('customer_id', auth()->id())
-                ->paginate(10)
-        ];
+        return $this->model::query()
+            ->with('image')
+            ->with('products')
+            ->with('image')
+            ->with('time')
+            ->with("stylist", function ($query) {
+                $query->with('facility')
+                    ->with('user');
+            })
+            ->with('bill')
+            ->orderByDesc('tasks.date')
+            ->where('customer_id', auth()->id())
+            ->paginate(10);
     }
 }
