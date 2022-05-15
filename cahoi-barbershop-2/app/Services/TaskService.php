@@ -147,6 +147,7 @@ class TaskService extends BaseService
 
             $imageTask = new ImageTask();
             $imageTask::query()->insert($dataImages);
+            (new BillService())->createBill($request);
             DB::commit();
             return [
                 "data" => true

@@ -19,24 +19,32 @@ class StylistService extends BaseService
     #[ArrayShape(["data" => "array|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection"])]
     public function getViaFacility(Request $request, $facilityId): Collection|array
     {
-        $rule = [
-            "date" => "required"
+        $rules = [
+            'date' => 'required|date_format:Y-m-d'
         ];
+        $this->doValidate($request, $rules);
+        $stylistIds = $this->model::query()->with('user')
+                                  ->join('calendar_stylist', 'calendar_stylist.stylist_id', '=', 'stylists.id')
+                                  ->join('calendars', 'calendars.id', '=', 'calendar_stylist.calendar_id')
+                                  ->join('facilities', 'facilities.id', '=', 'stylists.facility_id')
+                                  ->where('stylists.facility_id', $facilityId)
+                                  ->whereDate('calendars.scheduled_start_at', $request->date)
+                                  ->pluck('stylists.id')
+                                  ->toArray();
 
-        $this->doValidate($request, $rule);
-
-        $date = $request->date;
         return [
-            "data" => $this->model::query()->with('user')
-                ->join('calendar_stylist', 'calendar_stylist.stylist_id', '=', 'stylists.id')
-                ->join('calendars', 'calendars.id', '=', 'calendar_stylist.calendar_id')
-                ->join('facilities', 'facilities.id', '=', 'stylists.facility_id')
-                ->where('stylists.facility_id', $facilityId)
-                ->when($date, function ($q) use ($date) {
-                    $q->whereDate('calendars.scheduled_start_at', $date);
-                })
-                ->select('stylists.*', 'calendar_stylist.*')
-                ->get()
+            "data" => $this->model::query()
+                                  ->join('users','users.id','=','stylists.user_id')
+                                  ->join('tasks', 'tasks.stylist_id', '=', 'stylists.id')
+                                  ->join('ratings', 'ratings.task_id', '=', 'tasks.id')
+                                  ->whereIn('stylists.id', $stylistIds)
+                                  ->select(
+                                      DB::raw('round(AVG(communication_rate),1) as avg_communication_rate'),
+                                      DB::raw('round(AVG(skill_rate),1) as avg_skill_rate'),
+                                      'stylists.id','users.name','users.avatar'
+                                  )
+                                  ->groupBy('stylists.id','users.name','users.avatar')
+                                  ->get()
         ];
     }
 
@@ -45,14 +53,14 @@ class StylistService extends BaseService
     {
         return [
             "data" => $this->model::query()
-                ->join('tasks', 'tasks.stylist_id', '=', 'stylists.id')
-                ->join('ratings', 'ratings.task_id', '=', 'tasks.id')
-                ->where('stylists.id', $stylistId)
-                ->select(
-                    DB::raw('round(AVG(communication_rate),1) as avg_communication_rate'),
-                    DB::raw('round(AVG(skill_rate),1) as avg_skill_rate')
-                )
-                ->first()
+                                  ->join('tasks', 'tasks.stylist_id', '=', 'stylists.id')
+                                  ->join('ratings', 'ratings.task_id', '=', 'tasks.id')
+                                  ->where('stylists.id', $stylistId)
+                                  ->select(
+                                      DB::raw('round(AVG(communication_rate),1) as avg_communication_rate'),
+                                      DB::raw('round(AVG(skill_rate),1) as avg_skill_rate')
+                                  )
+                                  ->first()
         ];
     }
 }

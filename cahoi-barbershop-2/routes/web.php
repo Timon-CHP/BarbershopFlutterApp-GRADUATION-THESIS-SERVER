@@ -77,6 +77,12 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->get('/wall', "PostController@getViaUserId");
             $router->post('/like', "PostController@like");
         });
+
+        //TODO REPORT
+        Route::group(['prefix' => '/report'], function () use ($router) {
+            $router->get('/month/{month}', "ReportController@reportSalesViaMonth");
+            $router->get('/daily', "ReportController@reportSalesDaily");
+        });
     });
 
     Route::group(['prefix' => 'auth'], function () use ($router) {
@@ -89,7 +95,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
     });
 
     Route::group(['prefix' => '/stylist'], function () use ($router) {
-        $router->get('/{facilityId}', 'StylistController@getViaFacility');
+        $router->get('/facility/{facilityId}', 'StylistController@getViaFacility');
         $router->get('/rating/{stylistId}', 'StylistController@getRatingViaStylistId');
     });
 
