@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Task;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use JetBrains\PhpStorm\ArrayShape;
@@ -80,15 +81,18 @@ class PostService extends BaseService
     }
 
     #[ArrayShape(["data" => "\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model[]"])]
-    public function getViaMonth(Request $request): array
+    public function getViaMonth(Request $request): LengthAwarePaginator
     {
-        return [
-            "data" => $this->model::query()
-                ->whereMonth('public_at', Carbon::today())
-                ->where('deleted_at', null)
-                ->orderByDesc('like_count')
-                ->paginate(10)
-        ];
+        return $this->model::query()
+            ->with('task', function ($query) {
+                $query->with('customer')
+                    ->with('stylist')
+                    ->with("image");
+            })
+            ->whereMonth('public_at', Carbon::today())
+            ->where('deleted_at', null)
+            ->orderByDesc('like_count')
+            ->paginate(10);
     }
 
     public function getViaUserId(Request $request)
@@ -100,13 +104,16 @@ class PostService extends BaseService
 
         $this->doValidate($request, $rule);
 
-        return [
-            "data" => $this->model::query()
-                ->join("tasks", 'tasks.id', '=', 'posts.task_id')
-                ->where('tasks.customer_id', $request->user_id)
-                ->orderByDesc('public_at')
-                ->paginate(10)
-        ];
+        return $this->model::query()
+            ->with('task', function ($query) use ($request) {
+                $query->with('customer')
+                    ->with('stylist')
+                    ->with("image")
+                    ->where('customer_id', $request->user_id);
+            })
+            ->where('deleted_at', null)
+            ->orderByDesc('public_at')
+            ->paginate(10);
     }
 
     /**

@@ -15,20 +15,19 @@ class TypeProductTableSeeder extends Seeder
      */
     public function run()
     {
-        $categoryService = new TypeProduct();
-        $categoryService->name = 'Hair cut/styling';
-        $categoryService->save();
-
-        $categoryService = new TypeProduct();
-        $categoryService->name = 'Hair dying';
-        $categoryService->save();
-
-        $categoryService = new TypeProduct();
-        $categoryService->name = 'Curling hair';
-        $categoryService->save();
-
-        $categoryService = new TypeProduct();
-        $categoryService->name = 'More';
-        $categoryService->save();
+        TypeProduct::query()->insert([
+            [
+                'name' => 'Cắt gội massage'
+            ],
+            [
+                'name' => 'Combo chăm sóc da'
+            ],
+            [
+                'name' => 'Uốn hàn quốc'
+            ],
+            [
+                'name' => 'Nhuộm cao cấp'
+            ],
+        ]);
     }
 }
