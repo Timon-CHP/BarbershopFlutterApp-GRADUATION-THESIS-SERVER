@@ -32,20 +32,39 @@ class StylistService extends BaseService
                                   ->pluck('stylists.id')
                                   ->toArray();
 
-        return [
-            "data" => $this->model::query()
-                                  ->join('users','users.id','=','stylists.user_id')
-                                  ->join('tasks', 'tasks.stylist_id', '=', 'stylists.id')
-                                  ->join('ratings', 'ratings.task_id', '=', 'tasks.id')
-                                  ->whereIn('stylists.id', $stylistIds)
-                                  ->select(
-                                      DB::raw('round(AVG(communication_rate),1) as avg_communication_rate'),
-                                      DB::raw('round(AVG(skill_rate),1) as avg_skill_rate'),
-                                      'stylists.id','users.name','users.avatar'
-                                  )
-                                  ->groupBy('stylists.id','users.name','users.avatar')
-                                  ->get()
-        ];
+        $stylists = $this->model::query()
+                                ->join('users', 'users.id', '=', 'stylists.user_id')
+                                ->join('tasks', 'tasks.stylist_id', '=', 'stylists.id')
+                                ->join('ratings', 'ratings.task_id', '=', 'tasks.id')
+                                ->whereIn('stylists.id', $stylistIds)
+                                ->select(
+                                    DB::raw('round(AVG(communication_rate),1) as avg_communication_rate'),
+                                    DB::raw('round(AVG(skill_rate),1) as avg_skill_rate'),
+                                    'stylists.id', 'users.name', 'users.avatar'
+                                )
+                                ->groupBy('stylists.id', 'users.name', 'users.avatar')
+                                ->get();
+        $response = [];
+        foreach ($stylistIds as $keyStylist => $stylistId) {
+            foreach ($stylists as $stylist) {
+                if ($stylist->id == $stylistId) {
+                    $response[$keyStylist]['id']                     = $stylistId;
+                    $response[$keyStylist]['name']                   = $stylist->name;
+                    $response[$keyStylist]['avatar']                 = $stylist->avater;
+                    $response[$keyStylist]['avg_communication_rate'] = $stylist->avg_communication_rate;
+                    $response[$keyStylist]['avg_skill_rate']         = $stylist->avg_skill_rate;
+                    break;
+                }
+                $response[$keyStylist]['id']                     = $stylistId;
+                $response[$keyStylist]['name']                   = null;
+                $response[$keyStylist]['avatar']                 = null;
+                $response[$keyStylist]['avg_communication_rate'] = null;
+                $response[$keyStylist]['avg_skill_rate']         = null;
+            }
+        }
+
+        return $response;
+
     }
 
     #[ArrayShape(["data" => "mixed"])]
