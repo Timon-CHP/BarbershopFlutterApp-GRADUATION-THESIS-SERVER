@@ -49,10 +49,8 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->post('/', "TaskController@createTask");
             $router->get('/', "TaskController@getTaskViaDay");
             $router->post('/update-status', "TaskController@updateStatus");
-            $router->get('/completed', "TaskController@getTaskCompleted");
-            $router->get('/uncompleted', "TaskController@getTaskUncompleted");
             $router->get('/detail', "TaskController@getDetail");
-            $router->get('/customer', "TaskController@getViaCustomerId");
+            $router->get('/customer/history', "TaskController@getHistory");
         });
 
         //Bill

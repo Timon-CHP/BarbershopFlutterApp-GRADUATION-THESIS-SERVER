@@ -26,24 +26,14 @@ class TaskController extends BaseController
         return response()->json($this->service->getTaskViaDay($request));
     }
 
-    public function getTaskUncompleted(Request $request): JsonResponse
-    {
-        return response()->json($this->service->getTaskUncompleted($request));
-    }
-
-    public function getTaskCompleted(Request $request): JsonResponse
-    {
-        return response()->json($this->service->getTaskCompleted($request));
-    }
-
     public function getDetail(Request $request): JsonResponse
     {
         return response()->json($this->service->getDetail($request));
     }
 
-    public function getViaCustomerId(Request $request): JsonResponse
+    public function getHistory(Request $request): JsonResponse
     {
-        return response()->json($this->service->getViaCustomerId($request));
+        return response()->json($this->service->getHistory($request));
     }
 
     /**

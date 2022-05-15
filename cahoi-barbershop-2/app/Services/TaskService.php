@@ -37,7 +37,7 @@ class TaskService extends BaseService
             "time_slot_id" => $request->time_slot_id,
             "date" => $request->date,
             "notes" => $request->notes,
-            "customer_id" => auth()->user()->id,
+            "customer_id" => auth()->id(),
             "stylist_id" => $request->stylist_id,
         ]);
 
@@ -71,7 +71,7 @@ class TaskService extends BaseService
 
 
         $stylist = Stylist::query()
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', auth()->id())
             ->first();
 
         return $this->model::query()
@@ -85,47 +85,6 @@ class TaskService extends BaseService
                 $q->where('status', $status);
             })
             ->paginate(10);
-//        if ($status === null)
-//            return $task->paginate(10);
-//        else {
-//            $task->where("status", $status);
-//            return $task->paginate(10);
-//        }
-
-    }
-
-    #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
-    function getTaskUncompleted(Request $request): array
-    {
-        $rule = [
-            'stylist_id' => 'required|exists:stylists,id',
-        ];
-
-        $this->doValidate($request, $rule);
-
-        $task = $this->model::query()->with('customer')
-            ->where('stylist_id', $request->stylist_id)
-            ->where('status', 0);
-        return [
-            "data" => $task->paginate(10)
-        ];
-    }
-
-    #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
-    function getTaskCompleted(Request $request): array
-    {
-        $rule = [
-            'stylist_id' => 'required|exists:stylists,id',
-        ];
-
-        $this->doValidate($request, $rule);
-
-        $task = $this->model::query()->with('customer')
-            ->where('stylist_id', $request->stylist_id)
-            ->where('status', 1);
-        return [
-            "data" => $task->paginate(10)
-        ];
     }
 
     #[ArrayShape(["data" => "\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection"])]
@@ -199,18 +158,20 @@ class TaskService extends BaseService
     }
 
     #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
-    public function getViaCustomerId(Request $request): array
+    public function getHistory(Request $request): array
     {
-        $rule = [
-            'customer_id' => 'required:users,id'
-        ];
-
-        $this->doValidate($request, $rule);
-
         return [
             "data" => $this->model::query()
                 ->with('image')
-                ->where('customer_id', $request->customer_id)
+                ->with('products')
+                ->with('image')
+                ->with('time')
+                ->with("stylist", function ($query) {
+                    $query->with('facility');
+                })
+                ->with('bill')
+                ->orderByDesc('tasks.date')
+                ->where('customer_id', auth()->id())
                 ->paginate(10)
         ];
     }

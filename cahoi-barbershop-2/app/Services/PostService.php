@@ -29,7 +29,7 @@ class PostService extends BaseService
 
         $task = Task::query()->where('id', $request->task_id)->first();
 
-        if (auth()->user()->id != $task->customer_id) {
+        if (auth()->id() != $task->customer_id) {
             return [
                 'data' => null,
                 'message' => 'you are not authorized to do'
@@ -63,7 +63,7 @@ class PostService extends BaseService
             ->join('tasks', 'tasks.id', '=', 'posts.task_id')
             ->where('posts.id', $request->post_id)->first();
 
-        if (auth()->user()->id != $post->customer_id) {
+        if (auth()->id() != $post->customer_id) {
             return [
                 'data' => null,
                 'message' => 'you are not authorized to do'
@@ -123,7 +123,7 @@ class PostService extends BaseService
 
         $like = Like::query()
             ->where("post_id", $request->post_id)
-            ->where('user_id', auth()->user()->id)
+            ->where('user_id', auth()->id())
             ->first();
 
         DB::beginTransaction();
@@ -131,7 +131,7 @@ class PostService extends BaseService
             if (!$like) {
                 Like::create([
                     'post_id' => $request->post_id,
-                    'user_id' => auth()->user()->id
+                    'user_id' => auth()->id()
                 ]);
 
 
@@ -150,7 +150,7 @@ class PostService extends BaseService
             } else {
                 Like::query()
                     ->where("post_id", $request->post_id)
-                    ->where('user_id', auth()->user()->id)
+                    ->where('user_id', auth()->id())
                     ->delete();
 
                 $like_count = Like::query()

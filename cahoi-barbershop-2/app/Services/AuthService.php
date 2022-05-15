@@ -167,6 +167,6 @@ class AuthService extends BaseService
 
     public function refreshToken(): array
     {
-        return $this->respondWithToken(auth()->setTTL(30)->refresh());
+        return $this->respondWithToken(auth()->setTTL(24 * 60 * 30)->refresh());
     }
 }

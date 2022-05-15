@@ -23,7 +23,7 @@ class UserService extends BaseService
             "data" => $this->model::query()
                 ->with('roles')
                 ->with('rank')
-                ->find(auth()->user()->id)
+                ->find(auth()->id())
         ];
     }
 
@@ -55,7 +55,7 @@ class UserService extends BaseService
     {
         return $this->model::query()->with("roles")
             ->where('name', 'LIKE', '%' . $request->search_string . '%')
-            ->where('id', '<>', auth()->user()->id)
+            ->where('id', '<>', auth()->id())
             ->paginate(10);
     }
 }
