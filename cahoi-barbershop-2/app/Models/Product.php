@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -17,6 +16,7 @@ class Product extends Model
         'price',
         'sort_description',
         'description',
+        'image',
         'type_product_id',
     ];
 
@@ -28,11 +28,6 @@ class Product extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(TypeProduct::class, 'type_product_id', 'id');
-    }
-
-    public function images(): HasMany
-    {
-        return $this->hasMany(ImageProduct::class, 'product_id', 'id');
     }
 
     protected $hidden = [

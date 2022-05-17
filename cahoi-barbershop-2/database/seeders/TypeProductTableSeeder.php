@@ -17,7 +17,7 @@ class TypeProductTableSeeder extends Seeder
     {
         TypeProduct::query()->insert([
             [
-                'name' => 'Cắt gội massage'
+                'name' => 'Cắt_gội_massage'
             ],
             [
                 'name' => 'Combo chăm sóc da'
@@ -26,7 +26,7 @@ class TypeProductTableSeeder extends Seeder
                 'name' => 'Uốn hàn quốc'
             ],
             [
-                'name' => 'Nhuộm cao cấp'
+                'name' => 'Nhuộm_cao_cấp'
             ],
         ]);
     }

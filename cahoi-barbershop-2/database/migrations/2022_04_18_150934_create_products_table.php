@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->float('price');
             $table->string('sort_description');
             $table->text('description');
+            $table->text('image');
             $table->foreignId('type_product_id')->references('id')->on('type_products')->onDelete('cascade');
             $table->timestamps();
         });
