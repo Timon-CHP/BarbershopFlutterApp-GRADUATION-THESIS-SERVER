@@ -167,7 +167,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "399",
                 "duration"         => "30",
                 "description"      => "Thuốc uốn đầu tiên trên thế giới loại bỏ thành phần Hydrochloride khỏi Cysteamine tuyệt đối không tổn hại da đầu, cam kết không gây rụng tóc, không chứa hoá chất gây hại",
-                "image"            => "/upload/products/Cắt_gội_massage/Uốn_cao_cấp_Hàn_Quốc.jpg",
+                "image"            => "/upload/products/Uốn_Hàn_Quốc/Uốn_cao_cấp_Hàn_Quốc.jpg",
                 'type_product_id'  => 3,
             ],
             [
@@ -176,7 +176,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "319",
                 "duration"         => "30",
                 "description"      => "Thuốc uốn đầu tiên trên thế giới loại bỏ thành phần Hydrochloride khỏi Cysteamine tuyệt đối không tổn hại da đầu, cam kết không gây rụng tóc, không chứa hoá chất gây hại",
-                "image"            => "/upload/products/Cắt_gội_massage/Uốn_tiêu_chuẩn.jpg",
+                "image"            => "/upload/products/Uốn_Hàn_Quốc/Uốn_tiêu_chuẩn.jpg",
                 'type_product_id'  => 3,
             ],
             [
@@ -185,7 +185,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "469",
                 "duration"         => "30",
                 "description"      => "Thuốc uốn đầu tiên trên thế giới loại bỏ thành phần Hydrochloride khỏi Cysteamine tuyệt đối không tổn hại da đầu, cam kết không gây rụng tóc, không chứa hoá chất gây hại",
-                "image"            => "/upload/products/Cắt_gội_massage/Uốn_siêu_cấp_phục_hồi_Keratin_Smooth.jpg",
+                "image"            => "/upload/products/Uốn_Hàn_Quốc/Uốn_siêu_cấp_phục_hồi_Keratin_Smooth.jpg",
                 'type_product_id'  => 3,
             ],
             [
@@ -194,7 +194,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "499",
                 "duration"         => "30",
                 "description"      => "Định nghĩa mới về biểu tượng thời trang tóc mạnh mẽ, nổi bật & cuốn hút. Là kiểu uốn hoàn toàn mới đang tạo trend khắp châu Á, khiến giới trẻ điên đảo về kiểu tóc chất chơi thời thượng với kĩ thuật uốn cũng vô cùng ngầu",
-                "image"            => "/upload/products/Cắt_gội_massage/Uốn_con_sâu.jpg",
+                "image"            => "/upload/products/Uốn_Hàn_Quốc/Uốn_con_sâu.jpg",
                 'type_product_id'  => 3,
             ],
             [
@@ -203,7 +203,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "899",
                 "duration"         => "30",
                 "description"      => "Là kiểu uốn tóc làm mưa làm gió trên khắp thế giới, đậm vẻ mạnh mẽ nam tính Á Phi. Từ tiền vệ Paul Pogba nổi tiếng thế giới đến Văn Thanh U23 Việt Nam cũng phải lựa chọn kiểu đầu Premlock độc đáo, cá tính này",
-                "image"            => "/upload/products/Cắt_gội_massage/Premlock.jpg",
+                "image"            => "/upload/products/Uốn_Hàn_Quốc/Premlock.jpg",
                 'type_product_id'  => 3,
             ],
             [
@@ -212,7 +212,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "119",
                 "duration"         => "20",
                 "description"      => "Giúp phục hồi tóc hư tổn, khô xơ, đem lại mái tóc bóng mượt, chắc khỏe bằng phương pháp hấp nhiệt bơ dầu oliu tự nhiên",
-                "image"            => "/upload/products/Cắt_gội_massage/Hấp_Dưỡng_Tinh_Chất_Oliu.jpg",
+                "image"            => "/upload/products/Uốn_Hàn_Quốc/Hấp_Dưỡng_Tinh_Chất_Oliu.jpg",
                 'type_product_id'  => 3,
             ],
             [
@@ -221,7 +221,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "159",
                 "duration"         => "30",
                 "description"      => "Chuyên trị tóc khô cứng, tóc hư tổn sau uốn nhuộm bằng công nghệ phục hồi Nano hiện đại nhất thị trường kết hợp cùng mạng tinh thể Amino",
-                "image"            => "/upload/products/Cắt_gội_massage/Phục_Hồi_Animo_Matrix_6_bước.jpg",
+                "image"            => "/upload/products/Uốn_Hàn_Quốc/Phục_Hồi_Animo_Matrix_6_bước.jpg",
                 'type_product_id'  => 3,
             ],
         ];
@@ -238,7 +238,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "339",
                 "duration"         => "60",
                 "description"      => "MÀU NHUỘM CHÍNH HÃNG - NHÃN HIỆU DAVINES Ý TỪ NĂM 1983 với Công nghệ Vibrachrom độc quyền, thay đổi hoàn toàn ngành màu nhuộm thế giới nhờ công thức tự nhiên",
-                "image"            => "/upload/products/Cắt_gội_massage/Nhuộm_cao_cấp_Davines.jpg",
+                "image"            => "/upload/products/Nhuộm_cao_cấp/Nhuộm_cao_cấp_Davines.jpg",
                 'type_product_id'  => 4,
             ],
             [
@@ -247,7 +247,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "119",
                 "duration"         => "20",
                 "description"      => "Giúp phục hồi tóc hư tổn, khô xơ, đem lại mái tóc bóng mượt, chắc khỏe bằng phương pháp hấp nhiệt bơ dầu oliu tự nhiên",
-                "image"            => "/upload/products/Cắt_gội_massage/Hấp_Dưỡng_Tinh_Chất_Oliu.jpg",
+                "image"            => "/upload/products/Nhuộm_cao_cấp/Hấp_Dưỡng_Tinh_Chất_Oliu.jpg",
                 'type_product_id'  => 4,
             ],
             [
@@ -256,7 +256,7 @@ class ProductsTableSeeder extends Seeder
                 "price"            => "159",
                 "duration"         => "30",
                 "description"      => "Chuyên trị tóc khô cứng, tóc hư tổn sau uốn nhuộm bằng công nghệ phục hồi Nano hiện đại nhất thị trường kết hợp cùng mạng tinh thể Amino",
-                "image"            => "/upload/products/Cắt_gội_massage/Phục_Hồi_Animo_Matrix_6_bước.jpg",
+                "image"            => "/upload/products/Nhuộm_cao_cấp/Phục_Hồi_Animo_Matrix_6_bước.jpg",
                 'type_product_id'  => 4,
             ],
         ];
