@@ -233,7 +233,7 @@ class ProductsTableSeeder extends Seeder
          * */
         $data = [
             [
-                "name"             => "Nhuộm_cao_cấp Davines",
+                "name"             => "Nhuộm cao cấp Davines",
                 "sort_description" => "Mở bán giới hạn chỉ 10 chi nhánh xuất sắc nhất",
                 "price"            => "339",
                 "duration"         => "60",

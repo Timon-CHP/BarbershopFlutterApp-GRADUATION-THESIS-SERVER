@@ -15,13 +15,15 @@ class CalendarStylistTableSeeder extends Seeder
     public function run()
     {
         $data = [];
-        for ($i = 1; $i <= 3; $i++) {
-            for ($j = $i; $j < 50; $j++) {
-                CalendarStylist::create([
-                    "stylist_id" => $j,
-                    "calendar_id" => $i,
-                ]);
+        for ($i = 1; $i <= 27; $i++) {
+            for ($j = 1; $j <= 30; $j++) {
+                $data[] = [
+                    "stylist_id" => $i,
+                    "calendar_id" => $j,
+                ];
             }
         }
+
+        CalendarStylist::query()->insert($data);
     }
 }

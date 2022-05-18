@@ -20,19 +20,29 @@ class StylistsTableSeeder extends Seeder
     {
         $faker = Factory::create();
 
-        for ($i = 0; $i < 50; $i++) {
-            $user = User::create([
-                'name' => $faker->name,
+        $users = [];
+        for ($i = 1; $i <= 27; $i++) {
+            $users[] = [
+                'name'         => $faker->name,
                 'phone_number' => $faker->phoneNumber,
-                'password' => Hash::make('Lequangtho12a3'),
-            ]);
-
-            Stylist::create([
-                'user_id' => $user->id,
-                'facility_id' => $i % 7 == 0 ? 1 : $i % 7
-            ]);
-
-            $user->assignRole(['stylist']);
+                'password'     => Hash::make('Lequangtho12a3'),
+            ];
         }
+
+        User::query()->insert($users);
+        $stylists  = [];
+
+        for ($i = 0; $i < 9; $i++) {
+            for ($j = 1; $j <= 3; $j++) {
+                $user = User::query()->find($i * 3 + $j + 1);
+                $user->assignRole(['stylist']);
+                $stylists[] = [
+                    'user_id'     => $user->id,
+                    'facility_id' => $i + 1
+                ];
+            }
+        }
+
+        Stylist::query()->insert($stylists);
     }
 }

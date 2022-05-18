@@ -19,7 +19,7 @@ class UserTableSeeder extends Seeder
         $faker = Factory::create();
 
         //seed user test
-        for ($i = 0; $i < 50; $i++) {
+        for ($i = 1; $i <= 20; $i++) {
             $user = User::create([
                 'name' => $faker->name,
                 'phone_number' => $faker->phoneNumber,
