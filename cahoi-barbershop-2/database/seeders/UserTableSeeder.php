@@ -19,12 +19,12 @@ class UserTableSeeder extends Seeder
         $faker = Factory::create();
 
         //seed user test
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 28; $i <= 48; $i++) {
             $user = User::create([
-                'name' => $faker->name,
-                'phone_number' => $faker->phoneNumber,
-                'password' => Hash::make('12345678'),
-            ]);
+                                     'name'         => $faker->name,
+                                     'phone_number' => "+849732712" . floor($i / 10) . $i % 10,
+                                     'password'     => Hash::make('Lequangtho12a3'),
+                                 ]);
 
             $user->assignRole(['customer']);
         }

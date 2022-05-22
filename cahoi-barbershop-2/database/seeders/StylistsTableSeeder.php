@@ -22,15 +22,23 @@ class StylistsTableSeeder extends Seeder
 
         $users = [];
         for ($i = 1; $i <= 27; $i++) {
-            $users[] = [
-                'name'         => $faker->name,
-                'phone_number' => $faker->phoneNumber,
-                'password'     => Hash::make('Lequangtho12a3'),
-            ];
+            if ($i == 8) {
+                $users[] = [
+                    'name'         => $faker->name,
+                    'phone_number' => "+84973271200",
+                    'password'     => Hash::make('Lequangtho12a3'),
+                ];
+            } else {
+                $users[] = [
+                    'name'         => $faker->name,
+                    'phone_number' => "+849732712" . floor($i / 10) . $i % 10,
+                    'password'     => Hash::make('Lequangtho12a3'),
+                ];
+            }
         }
 
         User::query()->insert($users);
-        $stylists  = [];
+        $stylists = [];
 
         for ($i = 0; $i < 9; $i++) {
             for ($j = 1; $j <= 3; $j++) {
