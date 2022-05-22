@@ -28,8 +28,8 @@ class RatingService extends BaseService
         $date = $request->date;
 
         return $this->model::query()
-                           ->rightJoin("tasks", "tasks.id", "=", "ratings.task_id")
-                           ->leftJoin("stylists", "stylists.id", "=", "tasks.stylist_id")
+                           ->join("tasks", "tasks.id", "=", "ratings.task_id")
+                           ->rightJoin("stylists", "stylists.id", "=", "tasks.stylist_id")
                            ->leftJoin('calendar_stylist', 'calendar_stylist.stylist_id', '=', 'stylists.id')
                            ->leftJoin("calendars", "calendar_stylist.calendar_id", "=", "calendars.id")
                            ->leftJoin("users", "users.id", "=", "stylists.user_id")

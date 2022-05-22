@@ -36,6 +36,11 @@ class TaskController extends BaseController
         return response()->json($this->service->getHistory($request));
     }
 
+    public function deleteTask(Request $request): JsonResponse
+    {
+        return response()->json($this->service->deleteTask($request));
+    }
+
     /**
      * @throws Exception
      */

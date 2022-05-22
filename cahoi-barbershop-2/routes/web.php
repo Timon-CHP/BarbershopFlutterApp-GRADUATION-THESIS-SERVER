@@ -51,6 +51,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->post('/update-status', "TaskController@updateStatus");
             $router->get('/detail', "TaskController@getDetail");
             $router->get('/customer/history', "TaskController@getHistory");
+            $router->delete('/', "TaskController@deleteTask");
         });
 
         //Bill

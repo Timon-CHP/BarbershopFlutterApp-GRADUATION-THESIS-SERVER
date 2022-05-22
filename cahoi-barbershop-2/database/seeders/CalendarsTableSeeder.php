@@ -18,7 +18,7 @@ class CalendarsTableSeeder extends Seeder
         $now = Carbon::now();
 
         for ($j = 0; $j < 30; $j++) {
-            $now->addDays($j);
+            $now->addDays($j != 0 ? 1 : 0);
             $data[] = [
                 "scheduled_start_at" => $now->setTime(8, 0)->toDateTime(),
                 "scheduled_end_at"   => $now->setTime(18, 0)->toDateTime(),
