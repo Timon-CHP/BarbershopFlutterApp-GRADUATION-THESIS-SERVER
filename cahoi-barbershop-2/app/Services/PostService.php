@@ -80,7 +80,7 @@ class PostService extends BaseService
         ];
     }
 
-    #[ArrayShape(["posts" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator", "likedPost" => "array|\Illuminate\Database\Eloquent\Collection"])]
+    #[ArrayShape(["data" => "array"])]
     public function getViaMonth(Request $request): array
     {
         $posts = (new Task())::query()
@@ -88,14 +88,17 @@ class PostService extends BaseService
                              ->with('stylist', function ($query) use ($request) {
                                  $query->with('user');
                              })
+                             ->with('customer')
                              ->join("posts", "posts.task_id", "=", "tasks.id")
                              ->whereMonth('public_at', Carbon::today())
                              ->orderByDesc('like_count');
 
         // dd(auth()->id());
         return [
-            "posts"     => $posts->paginate(10),
-            "likedPost" => $this->likedViaPosts($posts, auth()->id())
+            "data" => [
+                "posts"     => $posts->paginate(10),
+                "likedPost" => $this->likedViaPosts($posts, auth()->id())
+            ]
         ];
         // return $this->model::query()
         //                    ->with('task', function ($query) {
@@ -122,7 +125,8 @@ class PostService extends BaseService
                    ->toArray();
     }
 
-    #[ArrayShape(["posts" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator", "likedPost" => "array|\Illuminate\Database\Eloquent\Collection"])]
+
+    #[ArrayShape(["data" => "array"])]
     public function getViaUserId(Request $request): array
     {
         $rule = [
@@ -136,12 +140,15 @@ class PostService extends BaseService
                              ->with('stylist', function ($query) use ($request) {
                                  $query->with('user');
                              })
+                             ->with('customer')
                              ->join("posts", "posts.task_id", "=", "tasks.id")
                              ->where("customer_id", $request->user_id);
 
         return [
-            "posts"     => $posts->paginate(10),
-            "likedPost" => $this->likedViaPosts($posts, $request->user_id)
+            "data" => [
+                "posts"     => $posts->paginate(10),
+                "likedPost" => $this->likedViaPosts($posts, $request->user_id)
+            ]
         ];
     }
 
