@@ -83,13 +83,16 @@ class PostService extends BaseService
     #[ArrayShape(["data" => "array"])]
     public function getViaMonth(Request $request): array
     {
-        $posts = (new Task())::query()
-                             ->with("image")
-                             ->with('stylist', function ($query) use ($request) {
-                                 $query->with('user');
+        $posts = $this->model::query()
+                             ->with("task", function ($query) {
+                                 $query
+                                     ->with("customer")
+                                     ->with("stylist", function ($query) {
+                                         $query->with("user");
+                                     })
+                                     ->with("image")
+                                     ->get();
                              })
-                             ->with('customer')
-                             ->join("posts", "posts.task_id", "=", "tasks.id")
                              ->whereMonth('public_at', Carbon::today())
                              ->orderByDesc('like_count');
 
@@ -135,14 +138,30 @@ class PostService extends BaseService
 
         $this->doValidate($request, $rule);
 
-        $posts = (new Task())::query()
-                             ->with("image")
-                             ->with('stylist', function ($query) use ($request) {
-                                 $query->with('user');
+        $posts = $this->model::query()
+                             ->with("task", function ($query) {
+                                 $query
+                                     ->with("customer")
+                                     ->with("stylist", function ($query) {
+                                         $query->with("user");
+                                     })
+                                     ->with("image")
+                                     ->get();
                              })
-                             ->with('customer')
-                             ->join("posts", "posts.task_id", "=", "tasks.id")
-                             ->where("customer_id", $request->user_id);
+                             ->whereIn("posts.task_id", $this->model::query()
+                                                                    ->join("tasks", "tasks.id", "=", "posts.task_id")
+                                                                    ->where("tasks.customer_id", $request->user_id)
+                                                                    ->pluck("tasks.id")
+                                                                    ->toArray())
+                             ->orderByDesc('public_at');
+        // (new Task())::query()
+        //                  ->with("image")
+        //                  ->with('stylist', function ($query) use ($request) {
+        //                      $query->with('user');
+        //                  })
+        //                  ->with('customer')
+        //                  ->join("posts", "posts.task_id", "=", "tasks.id")
+        //                  ->where("customer_id", $request->user_id);
 
         return [
             "data" => [
