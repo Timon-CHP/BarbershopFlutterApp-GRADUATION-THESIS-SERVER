@@ -96,23 +96,12 @@ class PostService extends BaseService
                              ->whereMonth('public_at', Carbon::today())
                              ->orderByDesc('like_count');
 
-        // dd(auth()->id());
         return [
             "data" => [
                 "posts"     => $posts->paginate(10),
                 "likedPost" => $this->likedViaPosts($posts, auth()->id())
             ]
         ];
-        // return $this->model::query()
-        //                    ->with('task', function ($query) {
-        //                        $query->with('customer')
-        //                              ->with('stylist')
-        //                              ->with("image");
-        //                    })
-        //                    ->whereMonth('public_at', Carbon::today())
-        //                    ->where('deleted_at', null)
-        //                    ->orderByDesc('like_count')
-        //                    ->paginate(10);
     }
 
     public function likedViaPosts($posts, $userId): Collection|array
@@ -154,14 +143,6 @@ class PostService extends BaseService
                                                                     ->pluck("tasks.id")
                                                                     ->toArray())
                              ->orderByDesc('public_at');
-        // (new Task())::query()
-        //                  ->with("image")
-        //                  ->with('stylist', function ($query) use ($request) {
-        //                      $query->with('user');
-        //                  })
-        //                  ->with('customer')
-        //                  ->join("posts", "posts.task_id", "=", "tasks.id")
-        //                  ->where("customer_id", $request->user_id);
 
         return [
             "data" => [
