@@ -41,7 +41,7 @@ class AuthController extends BaseController
         return response()->json($this->service->loginWithGoogle($request));
     }
 
-    public function refreshToken()
+    public function refreshToken(): JsonResponse
     {
         return response()->json($this->service->refreshToken());
     }

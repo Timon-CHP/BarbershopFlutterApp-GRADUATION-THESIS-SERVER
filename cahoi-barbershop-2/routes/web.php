@@ -27,6 +27,8 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         //User
         Route::group(['prefix' => '/user'], function () use ($router) {
             $router->get('/me', 'UserController@me');
+            $router->post('/check-password', 'UserController@checkPassword');
+            $router->post('/change-password', 'UserController@changePassword');
         });
         RouterHelper::resource($router, 'users', 'UserController');
 
@@ -74,6 +76,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         Route::group(['prefix' => '/post'], function () use ($router) {
             $router->post('/', "PostController@createPost");
             $router->delete('/', "PostController@deleteMyPost");
+            $router->post('/edit', "PostController@updateMyPost");
             $router->get('/in-month', "PostController@getViaMonth");
             $router->get('/wall', "PostController@getViaUserId");
             $router->post('/like', "PostController@like");

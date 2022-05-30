@@ -43,4 +43,9 @@ class PostController extends BaseController
     {
         return response()->json($this->service->like($request));
     }
+
+    public function updateMyPost(Request $request): JsonResponse
+    {
+        return response()->json($this->service->updateMyPost($request));
+    }
 }

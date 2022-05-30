@@ -216,4 +216,32 @@ class PostService extends BaseService
             throw new Exception($e->getMessage(), 400);
         }
     }
+
+    public function updateMyPost(Request $request)
+    {
+        $rule = [
+            "post_id" => 'required|exists:posts,id'
+        ];
+
+        self::doValidate($request, $rule);
+
+        $post = $this->model::query()
+                            ->join("tasks", "tasks.id", "=", "posts.task_id")
+                            ->where("posts.id", $request->post_id);
+
+        // return [
+        //     "data" => $post->first()
+        // ];
+        if ($post->first()->customer_id != auth()->id()) {
+            return [
+                "data" => false
+            ];
+        }
+
+        $post->update(["captions" => $request->captions]);
+
+        return [
+            "data" => true
+        ];
+    }
 }

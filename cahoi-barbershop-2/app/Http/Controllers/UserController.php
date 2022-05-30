@@ -29,4 +29,14 @@ class UserController extends BaseController
     {
         return response()->json($this->service->checkExist($request));
     }
+
+    public function checkPassword(Request $request): JsonResponse
+    {
+        return response()->json($this->service->checkPassword($request));
+    }
+
+    public function changePassword(Request $request): JsonResponse
+    {
+        return response()->json($this->service->changePassword($request));
+    }
 }

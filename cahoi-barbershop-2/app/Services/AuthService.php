@@ -25,6 +25,7 @@ class AuthService extends BaseService
     public function logout(): array
     {
         auth()->logout();
+
         return [
             "data" => true
         ];
@@ -34,10 +35,10 @@ class AuthService extends BaseService
     {
         try {
             $user = $this->model->create([
-                'phone_number' => $request['phone_number'],
-                'name' => $request['name'],
-                'password' => Hash::make($request['password'])
-            ]);
+                                             'phone_number' => $request['phone_number'],
+                                             'name'         => $request['name'],
+                                             'password'     => Hash::make($request['password'])
+                                         ]);
 
 
             if (!$user) {
@@ -54,7 +55,7 @@ class AuthService extends BaseService
 
         } catch (Throwable) {
             return [
-                "data" => null,
+                "data"    => null,
                 'message' => __('fail!')
             ];
         }
@@ -63,7 +64,7 @@ class AuthService extends BaseService
     public function loginWithFacebook(Request $request): array
     {
         $rule = [
-            'name' => 'required',
+            'name'        => 'required',
             'provider_id' => 'required',
         ];
 
@@ -78,11 +79,11 @@ class AuthService extends BaseService
 
             if (!$user) {
                 $user = $this->model->create([
-                    "name" => $request->name,
-                    "email" => $request->email,
-                    "type_provider" => "facebook",
-                    "provider_id" => $request->provider_id,
-                ]);
+                                                 "name"          => $request->name,
+                                                 "email"         => $request->email,
+                                                 "type_provider" => "facebook",
+                                                 "provider_id"   => $request->provider_id,
+                                             ]);
 
                 $user->assignRole(['customer']);
             }
@@ -92,7 +93,7 @@ class AuthService extends BaseService
             ];
         } catch (Throwable $exception) {
             return [
-                'data' => null,
+                'data'    => null,
                 'message' => $exception->getMessage()
             ];
         }
@@ -114,7 +115,7 @@ class AuthService extends BaseService
     protected function respondWithToken($token): array
     {
         return [
-            'token' => $token,
+            'token'      => $token,
             'token_type' => 'bearer',
             'expires_in' => Carbon::now()->addSeconds(auth()->factory()->getTTL() * 60)->utc()->toDateTimeString()
         ];
@@ -130,11 +131,11 @@ class AuthService extends BaseService
                 ->first();
             if (!$user) {
                 $user = $this->model->create([
-                    "name" => $request['name'],
-                    "email" => $request['email'],
-                    "type_provider" => "google",
-                    "provider_id" => $request['provider_id'],
-                ]);
+                                                 "name"          => $request['name'],
+                                                 "email"         => $request['email'],
+                                                 "type_provider" => "google",
+                                                 "provider_id"   => $request['provider_id'],
+                                             ]);
 
                 $user->assignRole(['customer']);
             }
@@ -144,7 +145,7 @@ class AuthService extends BaseService
             ];
         } catch (Throwable $exception) {
             return [
-                'data' => null,
+                'data'    => null,
                 'message' => $exception->getMessage()
             ];
         }
@@ -165,7 +166,8 @@ class AuthService extends BaseService
         ];
     }
 
-    public function refreshToken(): array
+    public
+    function refreshToken(): array
     {
         return $this->respondWithToken(auth()->setTTL(24 * 60 * 30)->refresh());
     }
