@@ -38,10 +38,6 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->get('/stylist', 'FacilityController@getViaUserId');
         });
 
-
-        //Type Product
-        RouterHelper::resource($router, 'type-products', 'TypeProductController');
-
         //Product
         RouterHelper::resource($router, 'products', 'ProductController');
         $router->get('product/{typeId}', 'ProductController@getViaTypeProductId');
@@ -97,6 +93,12 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         $router->post('/refresh-token', 'AuthController@refreshToken');
         $router->get('/logout', 'AuthController@logout');
     });
+
+    //Type Product
+    RouterHelper::resource($router, 'type-products', 'TypeProductController');
+
+    //Product
+    $router->get('/product', 'ProductController@getProduct');
 
     Route::group(['prefix' => '/stylist'], function () use ($router) {
         $router->get('/facility/{facilityId}', 'StylistController@getViaFacility');

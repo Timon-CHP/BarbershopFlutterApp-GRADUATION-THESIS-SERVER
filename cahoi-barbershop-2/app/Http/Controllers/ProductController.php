@@ -19,4 +19,9 @@ class ProductController extends BaseController
     {
         return response()->json($this->service->getViaTypeProductId($request, $typeId));
     }
+
+    public function getProduct(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getProduct());
+    }
 }
