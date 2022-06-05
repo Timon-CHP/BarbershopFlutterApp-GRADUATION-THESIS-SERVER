@@ -12,6 +12,9 @@ class Rating extends Model
     protected $fillable = [
         'communication_rate',
         'skill_rate',
+        'assessment',
+        'secure',
+        'checkout',
         'comment',
         'task_id',
     ];

@@ -15,8 +15,12 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
-            $table->integer('communication_rate')->comment("điểm kĩ năng giao tiếp");
-            $table->integer('skill_rate')->comment("điểm kĩ năng chuyên môn");
+            $table->float('communication_rate')->default(5)->comment("điểm kĩ năng giao tiếp");
+            $table->float('skill_rate')->default(5)->comment("điểm kĩ năng chuyên môn");
+            $table->float('assessment')->default(5)->comment("điểm không gian của hàng");
+            $table->float('secure')->default(5)->comment("điểm thái độ bảo vệ");
+            $table->float('checkout')->default(5)->comment("điểm checkout");
+            $table->string("comment")->nullable();
             $table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->timestamps();
         });

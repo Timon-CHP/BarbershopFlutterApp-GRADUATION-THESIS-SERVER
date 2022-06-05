@@ -10,6 +10,7 @@ use App\Models\Rating;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use JetBrains\PhpStorm\ArrayShape;
 use YaangVu\LaravelBase\Services\impl\BaseService;
 
 class RatingService extends BaseService
@@ -48,6 +49,40 @@ class RatingService extends BaseService
                                "users.avatar",
                            )
                            ->get();
+    }
+
+    #[ArrayShape(["data" => "null"])]
+    public function getViaTaskId(Request $request, $taskId): array
+    {
+        return [
+            "data" => $this->model::query()->where("task_id", $taskId)->first()
+        ];
+    }
+
+    public function createViaTaskId(Request $request): array
+    {
+        $rule = [
+            'communication_rate' => 'min:0|max:5',
+            'skill_rate'         => 'min:0|max:5',
+            'assessment'         => 'min:0|max:5',
+            'secure'             => 'min:0|max:5',
+            'checkout'           => 'min:0|max:5',
+            'task_id'            => 'required|exists:tasks,id',
+        ];
+
+        self::doValidate($request, $rule);
+
+        return [
+            "data" => $this->model::query()->create([
+                                                        'communication_rate' => $request->communication_rate,
+                                                        'skill_rate'         => $request->skill_rate,
+                                                        'assessment'         => $request->assessment,
+                                                        'secure'             => $request->secure,
+                                                        'checkout'           => $request->checkout,
+                                                        'comment'            => $request->comment,
+                                                        'task_id'            => $request->task_id
+                                                    ])
+        ];
     }
 
 }

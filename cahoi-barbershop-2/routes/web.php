@@ -78,6 +78,13 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->post('/like', "PostController@like");
         });
 
+        // Rating
+
+        Route::group(['prefix' => '/rating'], function () use ($router) {
+            $router->get('/{taskId}', "RatingController@getViaTaskId");
+            $router->post('/', "RatingController@createViaTaskId");
+        });
+
         //TODO REPORT
         Route::group(['prefix' => '/report'], function () use ($router) {
             $router->get('/month/{month}', "ReportController@reportSalesViaMonth");
