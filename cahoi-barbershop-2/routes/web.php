@@ -125,5 +125,10 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         RouterHelper::resource($router, 'roles', 'RoleController');
         $router->post('/role/sync-role', 'RoleController@syncRoleViaUser');
         $router->get('/role/except', 'RoleController@getAllExceptSuperAdmin');
+
+        // Product
+        $router->post('/product', 'ProductController@createProduct');
+        $router->post('/product/edit/{productId}', 'ProductController@updateViaProductId');
+        $router->delete('/product/{productId}', 'ProductController@deleteViaProductId');
     });
 });
