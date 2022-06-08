@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->string('sort_description');
             $table->text('description');
             $table->text('image');
+            $table->boolean('status')->default(true);
             $table->foreignId('type_product_id')->references('id')->on('type_products')->onDelete('cascade');
             $table->timestamps();
         });

@@ -71,24 +71,24 @@ class ProductService extends BaseService
             $image->move($destinationPath, $nameImage);
 
 
-            $product = $this->model::query()->create([
-                                                         "name"             => $request->name,
-                                                         "duration"         => $request->duration,
-                                                         "price"            => $request->price,
-                                                         "sort_description" => $request->sort_description,
-                                                         "description"      => $request->description,
-                                                         "image"            => '/upload/products/' .
-                                                             Str::replace(' ',
-                                                                          '_',
-                                                                          $typeProduct->name,
-                                                             ) . "/" . $nameImage,
-                                                         "type_product_id"  => $request->type_product_id,
-                                                     ]);
+            $this->model::query()->create([
+                                              "name"             => $request->name,
+                                              "duration"         => $request->duration,
+                                              "price"            => $request->price,
+                                              "sort_description" => $request->sort_description,
+                                              "description"      => $request->description,
+                                              "image"            => '/upload/products/' .
+                                                  Str::replace(' ',
+                                                               '_',
+                                                               $typeProduct->name,
+                                                  ) . "/" . $nameImage,
+                                              "type_product_id"  => $request->type_product_id,
+                                          ]);
 
             DB::commit();
 
             return [
-                "data" => $product
+                "data" => true
             ];
         } catch (Exception $e) {
             DB::rollBack();
@@ -100,7 +100,8 @@ class ProductService extends BaseService
     /**
      * @throws Exception
      */
-    public function updateViaProductId(Request $request, $productId)
+    #[ArrayShape(["data" => "mixed"])]
+    public function updateViaProductId(Request $request, $productId): array
     {
         $rule = [
             "name"             => '',
@@ -109,6 +110,7 @@ class ProductService extends BaseService
             "sort_description" => '',
             "description"      => '',
             "image"            => '',
+            "status"           => '',
             "type_product_id"  => 'required|exists:type_products,id'
         ];
 
@@ -146,6 +148,7 @@ class ProductService extends BaseService
                                  "sort_description" => $request->sort_description ?? $product->sort_description,
                                  "description"      => $request->description ?? $product->description,
                                  "image"            => $product->image,
+                                 "status"           => $request->description ?? $product->status,
                                  "type_product_id"  => $request->type_product_id ?? $product->type_product_id,
                              ]);
 

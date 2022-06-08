@@ -17,6 +17,7 @@ class Product extends Model
         'sort_description',
         'description',
         'image',
+        'status',
         'type_product_id',
     ];
 
