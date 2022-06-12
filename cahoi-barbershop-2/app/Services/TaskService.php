@@ -199,4 +199,31 @@ class TaskService extends BaseService
             "data" => null
         ];
     }
+
+    #[ArrayShape(["data" => "\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection"])]
+    public function cleanOldTask(): array
+    {
+        $now = Carbon::now();
+
+        return [
+            "data" => $this->model::query()
+                                  ->where("customer_id", auth()->id())
+                                  ->whereDay("date", "<", $now)
+                                  ->where("status", 0)
+                                  ->delete()
+        ];
+    }
+
+    #[ArrayShape(["data" => "mixed"])]
+    public function checkCanBook(): array
+    {
+        $taskWaiting = $this->model::query()
+                          ->where("customer_id", auth()->id())
+                          ->where("status", 0)
+                          ->first();
+
+        return [
+            "data" => empty($taskWaiting)
+        ];
+    }
 }

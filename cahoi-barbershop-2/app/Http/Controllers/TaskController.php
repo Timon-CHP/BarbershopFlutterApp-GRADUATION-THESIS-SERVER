@@ -48,4 +48,14 @@ class TaskController extends BaseController
     {
         return response()->json($this->service->updateStatus($request));
     }
+
+    public function cleanOldTask(Request $request): JsonResponse
+    {
+        return response()->json($this->service->cleanOldTask($request));
+    }
+
+    public function checkCanBook(Request $request): JsonResponse
+    {
+        return response()->json($this->service->checkCanBook($request));
+    }
 }

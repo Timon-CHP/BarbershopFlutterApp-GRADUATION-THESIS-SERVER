@@ -50,6 +50,8 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->get('/detail', "TaskController@getDetail");
             $router->get('/customer/history', "TaskController@getHistory");
             $router->delete('/', "TaskController@deleteTask");
+            $router->get('/clean', "TaskController@cleanOldTask");
+            $router->get('/can-book', "TaskController@checkCanBook");
         });
 
         //Bill
@@ -79,7 +81,6 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         });
 
         // Rating
-
         Route::group(['prefix' => '/rating'], function () use ($router) {
             $router->get('/{taskId}', "RatingController@getViaTaskId");
             $router->post('/', "RatingController@createViaTaskId");
