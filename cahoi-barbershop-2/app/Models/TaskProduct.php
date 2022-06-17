@@ -10,6 +10,8 @@ class TaskProduct extends Model
 
     protected $fillable = [
         'task_id',
+        'name_product',
+        'price',
         'product_id',
     ];
 

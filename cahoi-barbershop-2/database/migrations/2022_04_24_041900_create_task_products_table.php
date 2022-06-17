@@ -15,6 +15,8 @@ class CreateTaskProductsTable extends Migration
     {
         Schema::create('task_products', function (Blueprint $table) {
             $table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
+            $table->string('name_product');
+            $table->float('price');
             $table->foreignId('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });

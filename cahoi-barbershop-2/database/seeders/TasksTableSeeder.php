@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Bill;
 use App\Models\ImageTask;
+use App\Models\Product;
 use App\Models\Task;
 use App\Models\TaskProduct;
 use Carbon\Carbon;
@@ -34,14 +35,20 @@ class TasksTableSeeder extends Seeder
                                          "stylist_id"   => $i
                                      ]);
 
+                $product = Product::query()->where("id", random_int(1, 10))->first();
                 TaskProduct::create([
                                         "task_id"    => $task->id,
-                                        "product_id" => random_int(1, 10),
+                                        "price" => $product->price,
+                                        "name_product" => $product->name,
+                                        "product_id" => $product->id,
                                     ]);
 
+                $product = Product::query()->where("id", random_int(1, 10))->first();
                 TaskProduct::create([
                                         "task_id"    => $task->id,
-                                        "product_id" => random_int(1, 10),
+                                        "price" => $product->price,
+                                        "name_product" => $product->name,
+                                        "product_id" => $product->id,
                                     ]);
 
                 Bill::query()->create([
@@ -50,19 +57,19 @@ class TasksTableSeeder extends Seeder
                                       ]);
 
                 ImageTask::query()->create([
-                                               "link"    => "/upload/task/Task-011652800761.jpg",
+                                               "link"    => "/upload/task/Task-01911654789706.jpg",
                                                "task_id" => $task->id,
                                            ]);
                 ImageTask::query()->create([
-                                               "link"    => "/upload/task/Task-111652800761.jpg",
+                                               "link"    => "/upload/task/Task-01951655033827.jpg",
                                                "task_id" => $task->id,
                                            ]);
                 ImageTask::query()->create([
-                                               "link"    => "/upload/task/Task-211652800761.jpg",
+                                               "link"    => "/upload/task/Task-11911654789706.jpg",
                                                "task_id" => $task->id,
                                            ]);
                 ImageTask::query()->create([
-                                               "link"    => "/upload/task/Task-311652800761.jpg",
+                                               "link"    => "/upload/task/Task-11951655033827.jpg",
                                                "task_id" => $task->id,
                                            ]);
             }

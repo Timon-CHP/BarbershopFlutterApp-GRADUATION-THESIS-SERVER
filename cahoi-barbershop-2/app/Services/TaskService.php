@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Image;
 use App\Models\ImageTask;
+use App\Models\Product;
 use App\Models\Stylist;
 use App\Models\Task;
 use App\Models\TaskProduct;
@@ -45,9 +46,13 @@ class TaskService extends BaseService
             $length = count($request->products);
 
             for ($i = 0; $i < $length; $i++) {
+                $product = Product::query()->where("id", $request->products[$i])->first();
+
                 TaskProduct::create([
                                         "task_id"    => $task->id,
-                                        "product_id" => $request->products[$i],
+                                        "name_product" => $product->name,
+                                        "price" => $product->price,
+                                        "product_id" => $product->id,
                                     ]);
             }
 
