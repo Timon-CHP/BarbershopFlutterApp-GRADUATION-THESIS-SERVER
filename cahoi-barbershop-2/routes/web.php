@@ -76,6 +76,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->delete('/', "PostController@deleteMyPost");
             $router->post('/edit', "PostController@updateMyPost");
             $router->get('/in-month', "PostController@getViaMonth");
+            $router->get('/last-month', "PostController@getViaLastMonth");
             $router->get('/wall', "PostController@getViaUserId");
             $router->post('/like', "PostController@like");
         });

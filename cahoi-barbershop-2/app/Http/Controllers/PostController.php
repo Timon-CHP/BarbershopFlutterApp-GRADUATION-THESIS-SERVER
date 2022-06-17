@@ -31,6 +31,11 @@ class PostController extends BaseController
         return response()->json($this->service->getViaMonth($request));
     }
 
+    public function getViaLastMonth(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getViaLastMonth($request));
+    }
+
     public function deleteMyPost(Request $request): JsonResponse
     {
         return response()->json($this->service->deleteMyPost($request));

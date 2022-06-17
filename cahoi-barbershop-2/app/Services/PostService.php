@@ -117,6 +117,29 @@ class PostService extends BaseService
                    ->toArray();
     }
 
+    #[ArrayShape(["data" => "array"])]
+    public function getViaLastMonth(Request $request): array
+    {
+        $posts = $this->model::query()
+                             ->with("task", function ($query) {
+                                 $query
+                                     ->with("customer")
+                                     ->with("stylist", function ($query) {
+                                         $query->with("user");
+                                     })
+                                     ->with("image")
+                                     ->get();
+                             })
+                             ->whereMonth('public_at', Carbon::now()->subDays(30))
+                             ->orderByDesc('like_count');
+
+        return [
+            "data" => [
+                "posts" => $posts->paginate(10),
+                "likedPost" => []
+            ]
+        ];
+    }
 
     #[ArrayShape(["data" => "array"])]
     public function getViaUserId(Request $request): array
