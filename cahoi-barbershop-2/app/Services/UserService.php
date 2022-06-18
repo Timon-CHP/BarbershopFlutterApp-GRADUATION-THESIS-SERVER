@@ -3,8 +3,11 @@
 namespace App\Services;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use JetBrains\PhpStorm\ArrayShape;
 use YaangVu\LaravelBase\Services\impl\BaseService;
@@ -89,5 +92,48 @@ class UserService extends BaseService
         return [
             "data" => $user->update(["password" => Hash::make($request['password'])])
         ];
+    }
+
+    /**
+     * @throws Exception
+     */
+    #[ArrayShape(["data" => "mixed"])]
+    public function changeAvatar(Request $request): array
+    {
+        $rule = [
+            'image' => 'required'
+        ];
+
+        self::doValidate($request, $rule);
+
+        $user = User::query()->where("id", auth()->id())->first();
+
+        try {
+            DB::beginTransaction();
+
+            $image = $request->file('image');
+
+            if ($user->avatar != null) {
+                File::delete(ltrim($user->avatar, "/"));
+            }
+
+            $nameImageOriginal = $image->getClientOriginalName();
+            $arrayNameImage    = explode('.', $nameImageOriginal);
+            $fileExt           = end($arrayNameImage);
+            $destinationPath   = './upload/avatars/';
+            $nameImage         = "avatar_" . $user->id . '.' . $fileExt;
+            $user->avatar      = '/upload/avatars/' . $nameImage;
+            $image->move($destinationPath, $nameImage);
+
+            $user->save();
+            DB::commit();
+
+            return [
+                "data" => true
+            ];
+        } catch (Exception $e) {
+            DB::rollBack();
+            throw new Exception($e->getMessage());
+        }
     }
 }

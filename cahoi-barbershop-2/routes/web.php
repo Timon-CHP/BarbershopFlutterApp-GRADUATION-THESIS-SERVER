@@ -29,6 +29,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->get('/me', 'UserController@me');
             $router->post('/check-password', 'UserController@checkPassword');
             $router->post('/change-password', 'UserController@changePassword');
+            $router->post('/change-avatar', 'UserController@changeAvatar');
         });
         RouterHelper::resource($router, 'users', 'UserController');
 

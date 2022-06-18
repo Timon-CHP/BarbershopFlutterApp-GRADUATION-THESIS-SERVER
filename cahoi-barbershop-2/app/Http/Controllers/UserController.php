@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\UserService;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use YaangVu\LaravelBase\Controllers\BaseController;
@@ -38,5 +39,13 @@ class UserController extends BaseController
     public function changePassword(Request $request): JsonResponse
     {
         return response()->json($this->service->changePassword($request));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function changeAvatar(Request $request): JsonResponse
+    {
+        return response()->json($this->service->changeAvatar($request));
     }
 }
