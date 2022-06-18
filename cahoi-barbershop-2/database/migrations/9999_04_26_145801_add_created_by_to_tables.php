@@ -67,6 +67,9 @@ class AddCreatedByToTables extends Migration
         Schema::table('time_slots', function (Blueprint $table) {
             $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
         });
+        Schema::table('discount_tasks', function (Blueprint $table) {
+            $table->foreignId('created_by')->nullable()->references('id')->on('users')->onDelete('cascade');
+        });
     }
 
     /**

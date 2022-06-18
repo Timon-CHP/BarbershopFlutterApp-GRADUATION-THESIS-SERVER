@@ -82,6 +82,7 @@ class TaskService extends BaseService
 
         return $this->model::query()
                            ->with('customer')
+                           ->with('discount')
                            ->with('products')
                            ->with('image')
                            ->with('time')

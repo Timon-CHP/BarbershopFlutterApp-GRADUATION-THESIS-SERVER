@@ -3,26 +3,31 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Discount extends Model
 {
     protected $table = 'discounts';
 
-    protected $fillable = [
-        'code',
-        'name',
-        'description',
-        'reduction',
-    ];
+    protected $fillable
+        = [
+            'code',
+            'name',
+            'is_public',
+            'description',
+            'reduction',
+        ];
+    protected $hidden
+        = [
+            'created_at',
+            'updated_at',
+            'created_by',
+        ];
 
-    public function bill()
+
+    public function tasks(): BelongsToMany
     {
-        return $this->hasMany(Bill::class, 'discount_id');
+        return $this->belongsToMany(Task::class, 'discount_task', 'task_id', 'discount_id');
     }
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-        'created_by',
-    ];
 }

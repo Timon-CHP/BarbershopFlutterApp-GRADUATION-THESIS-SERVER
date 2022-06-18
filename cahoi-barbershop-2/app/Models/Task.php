@@ -12,19 +12,21 @@ class Task extends Model
 {
     protected $table = 'tasks';
 
-    protected $fillable = [
-        'status',
-        'notes',
-        'date',
-        'time_slot_id',
-        'customer_id',
-        'stylist_id'
-    ];
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-        'created_by',
-    ];
+    protected $fillable
+        = [
+            'status',
+            'notes',
+            'date',
+            'time_slot_id',
+            'customer_id',
+            'stylist_id'
+        ];
+    protected $hidden
+        = [
+            'created_at',
+            'updated_at',
+            'created_by',
+        ];
 
     public function rating(): HasOne
     {
@@ -64,5 +66,10 @@ class Task extends Model
     public function image(): HasMany
     {
         return $this->hasMany(ImageTask::class, 'task_id', 'id');
+    }
+
+    public function discount(): BelongsToMany
+    {
+        return $this->belongsToMany(Discount::class, 'discount_tasks', 'discount_id', 'task_id');
     }
 }

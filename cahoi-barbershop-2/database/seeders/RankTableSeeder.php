@@ -15,20 +15,12 @@ class RankTableSeeder extends Seeder
     public function run()
     {
         Rank::create([
-            "rank_name" => "None",
+            "rank_name" => "Silver",
             "threshold" => "0"
         ]);
         Rank::create([
-            "rank_name" => "Silver",
-            "threshold" => "10"
-        ]);
-        Rank::create([
             "rank_name" => "Gold",
-            "threshold" => "30"
-        ]);
-        Rank::create([
-            "rank_name" => "Diamond",
-            "threshold" => "100"
+            "threshold" => "1500"
         ]);
     }
 }
