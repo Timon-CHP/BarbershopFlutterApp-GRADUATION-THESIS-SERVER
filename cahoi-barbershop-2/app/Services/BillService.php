@@ -6,7 +6,9 @@ use App\Models\Bill;
 use App\Models\Discount;
 use App\Models\DiscountTasks;
 use App\Models\TaskProduct;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
 use YaangVu\LaravelBase\Services\impl\BaseService;
 
 class BillService extends BaseService
@@ -44,7 +46,7 @@ class BillService extends BaseService
         $sumReduction = 0;
 
         foreach ($discounts as $discount) {
-            $d = Discount::query()->where("id", $discount->discount_id)->first();
+            $d            = Discount::query()->where("id", $discount->discount_id)->first();
             $sumReduction += $d->reduction;
         }
 
@@ -62,6 +64,19 @@ class BillService extends BaseService
                 "reduction"   => $discount ?? null,
                 "total_price" => $bill->total,
             ]
+        ];
+    }
+
+    #[ArrayShape(["data" => "mixed"])]
+    public function getSpentLast6Months(): array
+    {
+        return [
+            "data" => $this->model::query()
+                                  ->join("tasks", 'tasks.id', '=', "bills.task_id")
+                                  ->where("customer_id", auth()->id())
+                                  ->where("bills.created_at", '>=', Carbon::now()->subMonths(6))
+                                  ->pluck('bills.total')
+                                  ->sum()
         ];
     }
 }

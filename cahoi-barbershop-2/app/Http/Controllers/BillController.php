@@ -19,4 +19,9 @@ class BillController extends BaseController
     {
         return response()->json($this->service->createBill($request));
     }
+
+    public function getSpentLast6Months(Request $request): JsonResponse
+    {
+        return response()->json($this->service->getSpentLast6Months($request));
+    }
 }

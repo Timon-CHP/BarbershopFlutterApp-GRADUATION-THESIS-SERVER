@@ -140,7 +140,21 @@ class UserService extends BaseService
     #[ArrayShape(["data" => "bool"])]
     public function fetch(Request $request): array
     {
+        //Fetch task
         (new TaskService())->cleanOldTask();
+
+        //Fetch rank
+        $sumSpent = (new BillService())->getSpentLast6Months()['data'];
+        $user     = $this->model->firstWhere('id', auth()->id());
+        if ($sumSpent >= 1500 ) {
+            $user->update([
+                              "rank_id" => '2'
+                          ]);
+        } else {
+            $user->update([
+                              "rank_id" => '1'
+                          ]);
+        }
 
         return [
             "data" => true,

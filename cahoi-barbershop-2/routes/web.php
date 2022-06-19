@@ -61,6 +61,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         //Bill
         Route::group(['prefix' => '/bill'], function () use ($router) {
             $router->post('/', "BillController@createBill");
+            $router->get('/spent-last-6-months', "BillController@getSpentLast6Months");
         });
 
         //Discount

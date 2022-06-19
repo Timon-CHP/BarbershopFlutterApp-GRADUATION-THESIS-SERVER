@@ -130,7 +130,7 @@ class PostService extends BaseService
                                      ->with("image")
                                      ->get();
                              })
-                             ->whereMonth('public_at', Carbon::now()->subDays(30))
+                             ->whereMonth('public_at', Carbon::now()->subMonth())
                              ->orderByDesc('like_count');
 
         return [
