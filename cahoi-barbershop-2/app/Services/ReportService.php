@@ -7,6 +7,7 @@
 namespace App\Services;
 
 use App\Models\Bill;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use YaangVu\LaravelBase\Services\impl\BaseService;
@@ -26,7 +27,7 @@ class ReportService extends BaseService
                            ->sum('bills.total');
     }
 
-    public function reportSalesDaily(Request $request)
+    public function reportSalesDaily(Request $request): Collection|array
     {
         $rules = [
             'facility_id' => 'required|exists:facilities,id',

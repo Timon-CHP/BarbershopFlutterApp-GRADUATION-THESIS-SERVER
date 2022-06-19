@@ -79,4 +79,18 @@ class BillService extends BaseService
                                   ->sum()
         ];
     }
+
+    public function getTotalViaFacilityId($facilityId)
+    {
+        return $this->model::query()
+                           ->join("tasks", 'tasks.id', '=', "bills.task_id")
+                           ->join("stylists", 'stylists.id', '=', "tasks.stylist_id")
+                           ->join("facilities", 'facilities.id', '=', "stylists.facility_id")
+                           ->where("facilities.id", $facilityId)
+                           ->where("facilities.id", $facilityId)
+                           ->whereYear("bills.created_at", Carbon::now())
+                           ->whereMonth("bills.created_at", Carbon::now())
+                           ->pluck('bills.total')
+                           ->sum();
+    }
 }

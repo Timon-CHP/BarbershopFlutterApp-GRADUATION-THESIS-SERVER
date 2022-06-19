@@ -122,7 +122,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
 
     $router->get('/user/check-exist', 'UserController@checkExist');
 
-    //TODO test role
+    //TODO SUPER-ADMIN
     Route::group(['middleware' => ['role:super-admin']], function () use ($router) {
         //User
         Route::group(['prefix' => '/user'], function () use ($router) {
@@ -138,5 +138,12 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         $router->post('/product', 'ProductController@createProduct');
         $router->post('/product/edit/{productId}', 'ProductController@updateViaProductId');
         $router->delete('/product/{productId}', 'ProductController@deleteViaProductId');
+
+        // Revenue
+        Route::group(['prefix' => '/revenue'], function () use ($router) {
+            $router->get('/fetch', 'RevenueController@fetch');
+            $router->post('/paid', 'RevenueController@paid');
+            $router->get('/', 'RevenueController@getViaMonth');
+        });
     });
 });
