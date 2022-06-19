@@ -48,4 +48,9 @@ class UserController extends BaseController
     {
         return response()->json($this->service->changeAvatar($request));
     }
+
+    public function fetch(Request $request): JsonResponse
+    {
+        return response()->json($this->service->fetch($request));
+    }
 }

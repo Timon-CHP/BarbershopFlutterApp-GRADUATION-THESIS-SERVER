@@ -17,14 +17,27 @@ class DiscountsTableSeeder extends Seeder
      */
     public function run()
     {
+        Discount::create([
+                             "code"        => "DISCOUNT_RANK_SLIVER",
+                             "name"        => "Voucher rank Sliver",
+                             "description" => "Triết khấu 10% cho hóa đơn của khách hàng rank bạc",
+                             "reduction"   => 0.1,
+                         ]);
+
+        Discount::create([
+                             "code"        => "DISCOUNT_RANK_GOLD",
+                             "name"        => "Voucher rank Gold",
+                             "description" => "Triết khấu 15% cho hóa đơn của khách hàng rank bạc",
+                             "reduction"   => 0.15,
+                         ]);
         $fake = Factory::create();
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             Discount::create([
-                "code" => $i,
-                "name" => $fake->text(30),
-                "description" => $fake->text(),
-                "reduction" => round(random_int(1, 100) / 100, 2),
-            ]);
+                                 "code"        => "TOP_POST_" . $i,
+                                 "name"        => "Voucher Top bài $i chia sẻ",
+                                 "description" => "Mã giảm giá dành cho ngưới sở hữu bài chia sẻ có lượt like lớn thứ " . $i . " trong tháng trước",
+                                 "reduction"   => round((50 - ($i - 1) * 5) / 100, 2),
+                             ]);
         }
     }
 }

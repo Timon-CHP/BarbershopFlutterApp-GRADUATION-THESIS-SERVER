@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->string('captions', 250)->nullable();
             $table->integer('like_count')->default(0);
             $table->dateTime('public_at')->default(Carbon::now());
+            $table->boolean('is_awarded')->default(0);
             $table->dateTime('deleted_at')->nullable();
             $table->foreignId('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->timestamps();

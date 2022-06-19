@@ -28,6 +28,6 @@ class Discount extends Model
 
     public function tasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'discount_task', 'task_id', 'discount_id');
+        return $this->belongsToMany(Task::class, 'discount_tasks', 'discount_id', 'task_id');
     }
 }

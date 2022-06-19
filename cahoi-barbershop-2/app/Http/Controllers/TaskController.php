@@ -49,6 +49,16 @@ class TaskController extends BaseController
         return response()->json($this->service->updateStatus($request));
     }
 
+    public function addVoucher(Request $request): JsonResponse
+    {
+        return response()->json($this->service->addVoucher($request));
+    }
+
+    public function deleteVoucher(Request $request): JsonResponse
+    {
+        return response()->json($this->service->deleteVoucher($request));
+    }
+
     public function cleanOldTask(Request $request): JsonResponse
     {
         return response()->json($this->service->cleanOldTask($request));

@@ -18,7 +18,9 @@ class TimeSlotService extends BaseService
         $this->model = new TimeSlot();
     }
 
-    public function getTimeSlotViaStylistId(Request $request, $stylistId)
+    #[ArrayShape(["data" => "\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection"])]
+    public function getTimeSlotViaStylistId(Request $request,
+                                                                                                                                                                  $stylistId): array
     {
         $rule = [
             'date' => 'required'
@@ -28,12 +30,13 @@ class TimeSlotService extends BaseService
 
         return [
             "data" => $this->model::query()
-                ->join('tasks', 'tasks.time_slot_id', '=', 'time_slots.id')
-                ->where('tasks.stylist_id', $stylistId)
-                ->whereDate('tasks.date', $request->date)
-                ->select('time_slots.id', 'time_slots.time')
-                ->groupBy('id', 'time')
-                ->get()
+                                  ->join('tasks', 'tasks.time_slot_id', '=', 'time_slots.id')
+                                  ->where('tasks.stylist_id', $stylistId)
+                                  ->where('tasks.status', 0)
+                                  ->whereDate('tasks.date', $request->date)
+                                  ->select('time_slots.id', 'time_slots.time')
+                                  ->groupBy('id', 'time')
+                                  ->get()
         ];
     }
 

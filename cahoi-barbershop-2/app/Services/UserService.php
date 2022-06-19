@@ -136,4 +136,14 @@ class UserService extends BaseService
             throw new Exception($e->getMessage());
         }
     }
+
+    #[ArrayShape(["data" => "bool"])]
+    public function fetch(Request $request): array
+    {
+        (new TaskService())->cleanOldTask();
+
+        return [
+            "data" => true,
+        ];
+    }
 }

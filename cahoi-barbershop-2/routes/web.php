@@ -30,6 +30,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->post('/check-password', 'UserController@checkPassword');
             $router->post('/change-password', 'UserController@changePassword');
             $router->post('/change-avatar', 'UserController@changeAvatar');
+            $router->get('/fetch', 'UserController@fetch');
         });
         RouterHelper::resource($router, 'users', 'UserController');
 
@@ -53,6 +54,8 @@ $router->group(['prefix' => '/api'], function () use ($router) {
             $router->delete('/', "TaskController@deleteTask");
             $router->get('/clean', "TaskController@cleanOldTask");
             $router->get('/can-book', "TaskController@checkCanBook");
+            $router->post('/add-voucher', "TaskController@addVoucher");
+            $router->delete('/delete-voucher', "TaskController@deleteVoucher");
         });
 
         //Bill
@@ -63,6 +66,7 @@ $router->group(['prefix' => '/api'], function () use ($router) {
         //Discount
         Route::group(['prefix' => '/discount'], function () use ($router) {
             $router->get('/code', "DiscountController@getViaCode");
+            $router->get('/task', "DiscountController@getViaTask");
         });
 
         //Time Slot

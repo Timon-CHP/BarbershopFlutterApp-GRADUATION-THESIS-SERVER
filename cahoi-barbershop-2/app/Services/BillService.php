@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Bill;
 use App\Models\Discount;
+use App\Models\DiscountTasks;
 use App\Models\TaskProduct;
 use Illuminate\Http\Request;
 use YaangVu\LaravelBase\Services\impl\BaseService;
@@ -21,8 +22,7 @@ class BillService extends BaseService
     function createBill(Request $request): array
     {
         $rule = [
-            "task_id"       => 'required|exists:tasks,id',
-            "code_discount" => 'exists:discounts,code',
+            "task_id" => 'required|exists:tasks,id'
         ];
 
         $this->doValidate($request, $rule);
@@ -39,16 +39,22 @@ class BillService extends BaseService
         }
         $total = $price;
 
-        if($request->code_discount)
-        {
-            $discount = Discount::query()->where('code', $request->code_discount)->first(['code', 'reduction']);
-            $total = round($price * (1-$discount->reduction), 2);
+        $discounts = DiscountTasks::query()->where("task_id", $request->task_id)->get();
+
+        $sumReduction = 0;
+
+        foreach ($discounts as $discount) {
+            $d = Discount::query()->where("id", $discount->discount_id)->first();
+            $sumReduction += $d->reduction;
         }
 
-        $bill = Bill::create([
-                                 'total'   => $total,
-                                 'task_id' => $request->task_id,
-                             ]);
+        $total = round($price * (1 - $sumReduction), 2);
+
+
+        $bill = Bill::query()->create([
+                                          'total'   => $total,
+                                          'task_id' => $request->task_id,
+                                      ]);
 
         return [
             "data" => [

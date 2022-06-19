@@ -14,10 +14,17 @@ class Post extends Model
         = [
             'captions',
             'like_count',
+            'is_awarded',
             'public_at',
             'delete_at',
-        'task_id',
-    ];
+            'task_id',
+        ];
+    protected $hidden
+        = [
+            'created_at',
+            'updated_at',
+            'created_by',
+        ];
 
     public function users(): BelongsToMany
     {
@@ -28,10 +35,4 @@ class Post extends Model
     {
         return $this->belongsTo(Task::class, 'task_id', 'id');
     }
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-        'created_by',
-    ];
 }

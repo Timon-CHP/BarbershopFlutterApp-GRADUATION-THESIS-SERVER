@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Discount;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use YaangVu\LaravelBase\Services\impl\BaseService;
@@ -19,17 +20,17 @@ class DiscountService extends BaseService
     }
 
     #[ArrayShape(['data' => "\Illuminate\Database\Eloquent\Builder"])]
-    public function getViaCode(Request $request): array
+    public function getViaCode(Request $request): LengthAwarePaginator
     {
         $rule = [
-            'discount_code' => 'required'
+            'discount_code' => ''
         ];
         $this->doValidate($request, $rule);
 
-        return [
-            'data' => $this->model::query()
-                ->where('code', $request->discount_code)
-                ->get()
-        ];
+        return $this->model::query()
+                           ->where('code', 'LIKE', '%' . $request->discount_code . '%')
+                           ->where('id', '<>', 1)
+                           ->where('id', '<>', 2)
+                           ->paginate(10);
     }
 }

@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\DiscountTasks;
 use App\Models\Image;
 use App\Models\ImageTask;
+use App\Models\Post;
 use App\Models\Product;
 use App\Models\Stylist;
 use App\Models\Task;
 use App\Models\TaskProduct;
+use App\Models\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -41,18 +44,24 @@ class TaskService extends BaseService
                                          "customer_id"  => auth()->id(),
                                          "stylist_id"   => $request->stylist_id,
                                      ]);
+        $user = User::query()->where("id", auth()->id())->first();
 
         if ($task) {
+            DiscountTasks::query()->create([
+                                               "discount_id" => $user->rank_id,
+                                               "task_id"     => $task->id
+                                           ]);
+
             $length = count($request->products);
 
             for ($i = 0; $i < $length; $i++) {
                 $product = Product::query()->where("id", $request->products[$i])->first();
 
                 TaskProduct::create([
-                                        "task_id"    => $task->id,
+                                        "task_id"      => $task->id,
                                         "name_product" => $product->name,
-                                        "price" => $product->price,
-                                        "product_id" => $product->id,
+                                        "price"        => $product->price,
+                                        "product_id"   => $product->id,
                                     ]);
             }
 
@@ -107,6 +116,7 @@ class TaskService extends BaseService
                             ->with('customer')
                             ->with('products')
                             ->with('image')
+                            ->with('discount')
                             ->with('time')
                             ->where('id', $request->task_id)
                             ->first();
@@ -169,6 +179,82 @@ class TaskService extends BaseService
         }
     }
 
+    public function addVoucher(Request $request): array
+    {
+        $rule = [
+            "discount_id" => 'required|exists:discounts,id',
+            "task_id"     => 'required|exists:tasks,id'
+        ];
+
+        self::doValidate($request, $rule);
+
+        $postsLastMonth = (new PostService())
+                              ->getViaLastMonth($request)['data']['posts']
+                              ->toArray()['data'];
+
+        $post = null;
+        if ($request->discount_id >= 3 && $request->discount_id <= 13 && count($postsLastMonth) >= $request->discount_id - 2) {
+            $post = $postsLastMonth[$request->discount_id - 3];
+        }
+
+        if ($post == null || $post["is_awarded"] == 1) {
+            return [
+                "data"    => false,
+                "message" => "Bài viết này đã được trao giải hoặc không phải chủ sở hữu. Không thể áp dụng Voucher"
+            ];
+        } else {
+            $task = Task::query()->firstWhere("id", $request->task_id);
+
+            if ($post['task']['customer_id'] == $task['customer_id']) {
+                $discountTask = DiscountTasks::query()->create([
+                                                                   "discount_id" => $request->discount_id,
+                                                                   "task_id"     => $request->task_id,
+                                                               ]);
+            }
+
+            Post::query()->firstWhere("id", $post['id'])->update([
+                                                                     "is_awarded" => 1
+                                                                 ]);
+
+            return [
+                "data" => !empty($discountTask)
+            ];
+        }
+    }
+
+    #[ArrayShape(["data" => "bool"])]
+    public function deleteVoucher(Request $request): array
+    {
+        $rule = [
+            "discount_id" => 'required|exists:discounts,id',
+            "task_id"     => 'required|exists:tasks,id'
+        ];
+
+        self::doValidate($request, $rule);
+
+        $postsLastMonth = (new PostService())
+                              ->getViaLastMonth($request)['data']['posts']
+                              ->toArray()['data'];
+
+        $post = null;
+
+        if ($request->discount_id >= 3 && $request->discount_id <= 13 && count($postsLastMonth) >= $request->discount_id - 2) {
+            $post = $postsLastMonth[$request->discount_id - 3];
+
+            Post::query()->firstWhere("id", $post['id'])->update([
+                                                                     "is_awarded" => 0
+                                                                 ]);
+        }
+
+        return [
+            "data" => DiscountTasks::query()
+                                   ->where("discount_id", $request->discount_id)
+                                   ->where("task_id", $request->task_id)
+                                   ->delete() == 1,
+        ];
+
+    }
+
     #[ArrayShape(["data" => "\Illuminate\Contracts\Pagination\LengthAwarePaginator"])]
     public function getHistory(Request $request): LengthAwarePaginator
     {
@@ -182,7 +268,7 @@ class TaskService extends BaseService
                                      ->with('user');
                            })
                            ->with('bill')
-                           ->orderByDesc('tasks.date')
+                           ->orderByDesc('tasks.created_at')
                            ->where('customer_id', auth()->id())
                            ->paginate(10);
     }
@@ -194,6 +280,8 @@ class TaskService extends BaseService
         self::doValidate($request, $rule);
 
         $task = $this->model::query()->where("id", $request->task_id)->first();
+
+        DiscountTasks::query()->where("task_id", $task->id)->delete();
 
         if ($task->customer_id == auth()->id()) {
             return [
@@ -224,9 +312,9 @@ class TaskService extends BaseService
     public function checkCanBook(): array
     {
         $taskWaiting = $this->model::query()
-                          ->where("customer_id", auth()->id())
-                          ->where("status", 0)
-                          ->first();
+                                   ->where("customer_id", auth()->id())
+                                   ->where("status", 0)
+                                   ->first();
 
         return [
             "data" => empty($taskWaiting)
